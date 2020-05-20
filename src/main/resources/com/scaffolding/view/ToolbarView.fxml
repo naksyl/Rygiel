@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+
+<ToolBar prefHeight="40.0" prefWidth="437.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/10.0.2-internal">
+  <items>
+      <Label text="Filtruj:" />
+      <ChoiceBox fx:id="filterChoiceBox" prefWidth="150.0" />
+      <TextField fx:id="filterTextField" promptText="Wpisz szukany tekst..." />
+    <Button fx:id="clearFilterButton" mnemonicParsing="false" text="Wyczyść" />
+  </items>
+</ToolBar>

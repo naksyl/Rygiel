@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<HBox fx:id="aspectBox" minHeight="300.0" minWidth="500.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.scaffolding.controllers.MainViewController">
+   <children>
+      <Accordion fx:id="accordion" prefHeight="382.0" prefWidth="146.0">
+        <panes>
+          <TitledPane animated="false" text="Menu główne">
+            <content>
+                <VBox alignment="TOP_CENTER" prefHeight="322.0" prefWidth="144.0" spacing="10.0">
+                    <Button defaultButton="true" mnemonicParsing="false" text="Nowy pllik" />
+                    <Button mnemonicParsing="false" onAction="#openFile" text="Otwórz..." />
+                    <Button mnemonicParsing="false" text="Zapisz" />
+                    <Button mnemonicParsing="false" text="Zapisz jako.." />
+                    <Button layoutX="45.0" layoutY="128.0" mnemonicParsing="false" onAction="#closeApplication" text="Zakończ program" />
+                </VBox>
+            </content>
+          </TitledPane>
+            <TitledPane animated="false" text="Kontrahenci">
+                <VBox alignment="TOP_CENTER" spacing="10.0">
+                    <Button defaultButton="true" mnemonicParsing="false" text="Nowy" />
+                    <Button mnemonicParsing="false" text="Edytuj" />
+                    <Button mnemonicParsing="false" text="Usuń" />
+                </VBox>
+            </TitledPane>
+            <TitledPane animated="false" text="Ustawienia">
+                <VBox spacing="10.0">
+                    <CheckBox maxWidth="1.7976931348623157E308" mnemonicParsing="false" prefHeight="34.0" prefWidth="126.0" text="Automatycznie otwieraj ostatni plik" wrapText="true" />
+                    <CheckBox mnemonicParsing="false" prefHeight="18.0" text="Autozapis" />
+                </VBox>
+            </TitledPane>
+        </panes>
+      </Accordion>
+       <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" HBox.hgrow="ALWAYS">
+           <ToolBar prefHeight="40.0" prefWidth="200.0">
+               <items>
+                   <Button mnemonicParsing="false" text="Button" />
+               </items>
+           </ToolBar>
+           <HBox prefHeight="100.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
+              <children>
+
+                  <TableView prefHeight="325.0" prefWidth="226.0" HBox.hgrow="ALWAYS">
+                      <columns>
+                          <TableColumn prefWidth="75.0" text="Column X" />
+                          <TableColumn prefWidth="75.0" text="Column X" />
+                          <TableColumn prefWidth="75.0" text="Column X" />
+                          <TableColumn prefWidth="75.0" text="Column X" />
+                          <TableColumn prefWidth="75.0" text="Column X" />
+                      </columns>
+                  </TableView>
+              </children>
+           </HBox>
+       </VBox>
+   </children>
+</HBox>
