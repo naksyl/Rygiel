@@ -9,6 +9,7 @@ import java.io.File;
 public interface IHibernateSessionManager {
 
     boolean openSession(File fileName, String password);
+    boolean hasOpenedSession();
     void closeSession();
     Session getCurrentSession();
 

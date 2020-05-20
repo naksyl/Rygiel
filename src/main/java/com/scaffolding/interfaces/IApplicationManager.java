@@ -16,7 +16,9 @@ public interface IApplicationManager {
     Stage showWindow(ViewType view, String title);
     Stage getActiveWindow();
     void closeActiveWindow();
-    void openFile();
     void saveFile();
     void close();
+    void openFile();
+    void openExampleDatabase();
+    boolean hasOpenedFile();
 }

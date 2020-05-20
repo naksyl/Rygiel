@@ -2,7 +2,7 @@ package com.scaffolding.managers;
 
 import com.scaffolding.enums.ApplicationAspect;
 import com.scaffolding.interfaces.IApplicationManager;
-import com.scaffolding.interfaces.IAspectAwareController;
+import com.scaffolding.interfaces.IAspectAware;
 import com.scaffolding.interfaces.IAspectManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
@@ -16,12 +16,8 @@ public class AspectManager implements IAspectManager {
 
 
     private IApplicationManager applicationManager;
-    private List<IAspectAwareController> aspectAwareControllers;
+    private List<IAspectAware> aspectAwareControllers = new ArrayList<>();
 
-
-    public AspectManager() {
-        aspectAwareControllers = new ArrayList<>();
-    }
 
     @Autowired
     public void setApplicationManager(@Lazy IApplicationManager applicationManager) {
@@ -29,14 +25,14 @@ public class AspectManager implements IAspectManager {
     }
 
     @Autowired
-    public void setAspectAwareControllers(@Lazy List<IAspectAwareController> aspectAwareControllers) {
+    public void setAspectAwareControllers(@Lazy List<IAspectAware> aspectAwareControllers) {
         this.aspectAwareControllers = aspectAwareControllers;
     }
 
     public void changeApplicationAspect(ApplicationAspect aspect) {
-        for(IAspectAwareController controller: aspectAwareControllers)
+        for(IAspectAware controller: aspectAwareControllers)
             controller.beforeApplicationContextChange(aspect);
-        for(IAspectAwareController controller: aspectAwareControllers)
+        for(IAspectAware controller: aspectAwareControllers)
             controller.onApplicationAspectChanged(aspect);
     }
 

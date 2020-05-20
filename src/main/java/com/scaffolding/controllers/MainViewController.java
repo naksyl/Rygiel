@@ -1,18 +1,18 @@
 package com.scaffolding.controllers;
 
 import com.scaffolding.enums.ApplicationAspect;
+import com.scaffolding.enums.ViewType;
 import com.scaffolding.factories.ResourceMapper;
 import com.scaffolding.interfaces.IApplicationManager;
-import com.scaffolding.interfaces.IAspectAwareController;
+import com.scaffolding.interfaces.IAspectAware;
 import com.scaffolding.interfaces.IViewManager;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.control.Accordion;
+import javafx.scene.control.TableView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
-import javafx.scene.layout.VBox;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
@@ -21,16 +21,20 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 @Component
-public class MainViewController implements Initializable, IAspectAwareController {
+public class MainViewController implements Initializable, IAspectAware {
 
     @FXML
     private HBox aspectBox;
+
+    @FXML
+    TableView tableView;
 
     @FXML
     private Accordion accordion;
 
     private IApplicationManager applicationManager;
     private IViewManager viewManager;
+    private ViewType currentViewType = ViewType.WELCOME_VIEW;
 
     @Autowired
     public void setApplicationManager(@Lazy IApplicationManager applicationManager) {
@@ -49,14 +53,18 @@ public class MainViewController implements Initializable, IAspectAwareController
 
     @Override
     public void beforeApplicationContextChange(ApplicationAspect applicationAspect) {
-
+        ViewType newView = ResourceMapper.getAspectViewType(applicationAspect);
+        if (currentViewType != newView) {
+            Parent parent = viewManager.createView(newView);
+            HBox.setHgrow(parent, Priority.ALWAYS);
+            aspectBox.getChildren().set(1, parent);
+            currentViewType = newView;
+        }
     }
 
     @Override
     public void onApplicationAspectChanged(ApplicationAspect applicationAspect) {
-        Parent parent = viewManager.createView(ResourceMapper.getAspectViewType(applicationAspect));
-        HBox.setHgrow(parent, Priority.ALWAYS);
-        aspectBox.getChildren().set(1, parent);
+
     }
 
     private void setupAccordion() {
@@ -64,7 +72,28 @@ public class MainViewController implements Initializable, IAspectAwareController
             if (newPane != null) {
                 System.out.println(newPane.getText());
                 int aspectNumber = accordion.getPanes().indexOf(newPane);
-                ApplicationAspect applicationAspect = ApplicationAspect.values()[aspectNumber];
+                ApplicationAspect applicationAspect = ApplicationAspect.WELCOME;
+                switch (aspectNumber) {
+                    case 0:
+                        if (applicationManager.hasOpenedFile())
+                            applicationAspect = ApplicationAspect.STATISTICS;
+                        break;
+                    case 1:
+                        applicationAspect = ApplicationAspect.TABLE_CONTRACTOR;
+                        break;
+                    case 2:
+                        applicationAspect = ApplicationAspect.TABLE_ORDER;
+                        break;
+                    case 3:
+                        applicationAspect = ApplicationAspect.TABLE_BILL;
+                        break;
+                    case 4:
+                        applicationAspect = ApplicationAspect.TABLE_REPORT;
+                        break;
+                    case 5:
+                        applicationAspect = ApplicationAspect.OPTIONS;
+                        break;
+                }
                 applicationManager.setApplicationAspect(applicationAspect);
             } else {
                 applicationManager.setApplicationAspect(ApplicationAspect.WELCOME);

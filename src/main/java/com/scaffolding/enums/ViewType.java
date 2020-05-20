@@ -2,6 +2,7 @@ package com.scaffolding.enums;
 
 public enum ViewType {
     MAIN_VIEW,
+    STATISTIC_VIEW,
     OPTIONS_VIEW,
     DATABASE_VIEW,
     WELCOME_VIEW;

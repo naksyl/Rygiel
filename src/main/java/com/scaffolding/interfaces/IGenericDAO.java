@@ -6,6 +6,7 @@ public interface IGenericDAO<E>
 {
     Serializable save(E entity);
     public void saveOrUpdate(E entity);
+    public void saveOrUpdate(List<E> entities);
     void delete( E entity );
     void deleteAll();
     List<E> findAll();

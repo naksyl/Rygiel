@@ -4,6 +4,7 @@ import com.scaffolding.ScaffoldingApplication;
 import com.scaffolding.enums.ApplicationAspect;
 import com.scaffolding.enums.ViewType;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.Properties;
@@ -15,20 +16,27 @@ public class ResourceMapper {
         return ScaffoldingApplication.class.getResource(path);
     }
 
+    public static URL getResource(String resource) {
+        String path = "/com/scaffolding/" + resource;
+        return ScaffoldingApplication.class.getResource(path);
+    }
+
     public static ViewType getAspectViewType(ApplicationAspect aspect) {
         switch (aspect) {
             case WELCOME:
                 return ViewType.WELCOME_VIEW;
             case OPTIONS:
                 return ViewType.OPTIONS_VIEW;
+            case STATISTICS:
+                return ViewType.STATISTIC_VIEW;
             default:
                 return ViewType.DATABASE_VIEW;
         }
     }
 
-    public static URL getHibernateConfigurationFile() {
-        String path = "/com/scaffolding/configuration/hibernate.cfg.xml";
-        return ScaffoldingApplication.class.getResource(path);
+    public static File getExampleDatabaseFile() {
+        String path = "/com/scaffolding/example/example.mv.db";
+        return new File(ScaffoldingApplication.class.getResource(path).getFile());
     }
 
     public static Properties getApplicationProperties() {

@@ -2,24 +2,19 @@ package com.scaffolding.managers;
 
 import com.scaffolding.enums.ApplicationAspect;
 import com.scaffolding.enums.ViewType;
-import com.scaffolding.factories.DAOFactory;
 import com.scaffolding.factories.ResourceMapper;
-import com.scaffolding.interfaces.IApplicationManager;
-import com.scaffolding.interfaces.IAspectManager;
-import com.scaffolding.interfaces.IHibernateSessionManager;
-import com.scaffolding.interfaces.IViewManager;
+import com.scaffolding.interfaces.*;
 import com.scaffolding.model.Contractor;
 import javafx.application.Platform;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import javax.sound.midi.Soundbank;
 import java.io.File;
-import java.util.List;
 import java.util.Properties;
 import java.util.Stack;
 
@@ -28,21 +23,27 @@ public class ApplicationManager implements IApplicationManager {
 
     public static final String APPLICATION_NAME = "Rygiel 3.8";
 
-    private final Properties applicationProperties;
     private Stage primaryStage;
-    private final Stack<Stage> stages = new Stack<>();
+    private final Properties applicationProperties;
     private ApplicationAspect aspect;
-    private final IViewManager viewManager;
+    private final Stack<Stage> stages = new Stack<>();
+    private final IViewManager viewFactory;
     private final IAspectManager aspectManager;
     private final IHibernateSessionManager sessionManager;
+    private final IStorageManager storageManager;
+
     private FileChooser fileChooser;
+    private File openedFile;
 
     @Autowired
-    public ApplicationManager(IViewManager viewManager, IAspectManager aspectManager, IHibernateSessionManager sessionManager) {
-        this.viewManager = viewManager;
+    public ApplicationManager(IViewManager viewFactory, IAspectManager aspectManager, IHibernateSessionManager sessionManager, IStorageManager storageManager) {
+        this.viewFactory = viewFactory;
         this.aspectManager = aspectManager;
         this.sessionManager = sessionManager;
+        this.storageManager = storageManager;
         applicationProperties = ResourceMapper.getApplicationProperties();
+        setupFileChooser();
+
     }
 
 
@@ -65,17 +66,23 @@ public class ApplicationManager implements IApplicationManager {
     @Override
     public void run(Stage stage) {
         this.primaryStage = stage;
+        primaryStage.setOnCloseRequest(windowEvent -> {
+            if(windowEvent.getEventType() == WindowEvent.WINDOW_CLOSE_REQUEST) {
+                close();
+            }
+        });
         stage.setMinHeight(480);
         stage.setMinWidth(640);
         stage.setTitle(APPLICATION_NAME);
         stages.push(primaryStage);
         showView(ViewType.MAIN_VIEW);
+        setApplicationAspect(ApplicationAspect.WELCOME);
         stage.show();
     }
 
     @Override
     public void showView(ViewType view) {
-        Scene scene = new Scene(viewManager.createView(ViewType.MAIN_VIEW));
+        Scene scene = new Scene(viewFactory.createView(ViewType.MAIN_VIEW));
         primaryStage.setScene(scene);
     }
 
@@ -83,7 +90,7 @@ public class ApplicationManager implements IApplicationManager {
     public Stage showWindow(ViewType view, String title) {
         Stage stage = new Stage();
         stage.setTitle(title);
-        Parent parent = viewManager.createView(view);
+        Parent parent = viewFactory.createView(view);
         Scene scene = new Scene(parent);
         stage.setScene(scene);
         stages.push(stage);
@@ -104,20 +111,25 @@ public class ApplicationManager implements IApplicationManager {
 
     @Override
     public void openFile() {
-        setupFileChooser();
-        File file = new File("C:\\Users\\snako\\.scaffolding\\example");
-        sessionManager.openSession(file,"");
-        Contractor contractor = new Contractor("UVU","lsbfv","ksfslk","938473","874654945");
-        sessionManager.getContractorDAO().saveOrUpdate(contractor);
-        List<Contractor> contractorList = sessionManager.getContractorDAO().findAll();
-        Contractor id1 = sessionManager.getContractorDAO().findById(1);
-        System.out.println("Count="+contractorList.size()+" name = " + id1.getName());
-        for(Contractor c: contractorList)
-            System.out.println(c.getName());
-        sessionManager.closeSession();
+
     }
 
+    @Override
+    public void openExampleDatabase() {
+        openedFile = ResourceMapper.getExampleDatabaseFile();
+        if(sessionManager.openSession(openedFile, ""))
+            setApplicationAspect(ApplicationAspect.STATISTICS);
+        sessionManager.getCurrentSession().beginTransaction();
+        Contractor contractor = new Contractor("sgf", "sfgsrf", "igv", "isfsfi", "sid");
+        sessionManager.getCurrentSession().save(contractor);
+        System.out.println(sessionManager.getCurrentSession().createQuery("from Contractor ").list().get(0));
+        sessionManager.getCurrentSession().getTransaction().commit();
+    }
 
+    @Override
+    public boolean hasOpenedFile() {
+        return (openedFile != null);
+    }
 
     @Override
     public void saveFile() {
@@ -126,6 +138,7 @@ public class ApplicationManager implements IApplicationManager {
 
     @Override
     public void close() {
+        sessionManager.closeSession();
         Platform.exit();
     }
 

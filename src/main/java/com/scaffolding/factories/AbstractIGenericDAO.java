@@ -2,10 +2,13 @@ package com.scaffolding.factories;
 
 import com.scaffolding.interfaces.IGenericDAO;
 import com.scaffolding.interfaces.IHibernateSessionManager;
+import com.scaffolding.model.Contractor;
 import org.hibernate.Session;
 
+import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
 import java.io.Serializable;
 import java.util.List;
 
@@ -47,6 +50,15 @@ public abstract class AbstractIGenericDAO<E> implements IGenericDAO<E> {
     }
 
     @Override
+    public void saveOrUpdate(List<E> entities) {
+        getSession().beginTransaction();
+        for(E entity: entities) {
+            getSession().saveOrUpdate(entity);
+        }
+        getSession().getTransaction().commit();
+    }
+
+    @Override
     public void delete(E entity) {
         getSession().beginTransaction();
         getSession().delete(entity);
@@ -67,11 +79,16 @@ public abstract class AbstractIGenericDAO<E> implements IGenericDAO<E> {
     public List<E> findAll() {
         getSession().beginTransaction();
         CriteriaBuilder builder = getSession().getCriteriaBuilder();
-        CriteriaQuery<E> criteria = builder.createQuery(entityClass);
-        criteria.from(entityClass);
-        List<E> list = getSession().createQuery(criteria).getResultList();
+        CriteriaQuery<E> cq = builder.createQuery(entityClass);
+        Root<E> rootEntry = cq.from(entityClass);
+        CriteriaQuery<E> all = cq.select(rootEntry);
+        TypedQuery<E> allQuery = getSession().createQuery(all);
+        List<Contractor> from_contractor = getSession().createQuery("from Contractor").list();
+        System.out.println("Count " + from_contractor.size());
+        List<E> from =allQuery.getResultList();
         getSession().getTransaction().commit();
-        return list;
+        return from;
+
     }
 
     @Override
