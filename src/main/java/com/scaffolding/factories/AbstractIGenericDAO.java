@@ -67,8 +67,8 @@ public abstract class AbstractIGenericDAO<E> implements IGenericDAO<E> {
 
     @Override
     public void deleteAll() {
-        getSession().beginTransaction();
         List<E> entities = findAll();
+        getSession().beginTransaction();
         for (E entity : entities) {
             getSession().delete(entity);
         }
@@ -83,8 +83,6 @@ public abstract class AbstractIGenericDAO<E> implements IGenericDAO<E> {
         Root<E> rootEntry = cq.from(entityClass);
         CriteriaQuery<E> all = cq.select(rootEntry);
         TypedQuery<E> allQuery = getSession().createQuery(all);
-        List<Contractor> from_contractor = getSession().createQuery("from Contractor").list();
-        System.out.println("Count " + from_contractor.size());
         List<E> from =allQuery.getResultList();
         getSession().getTransaction().commit();
         return from;

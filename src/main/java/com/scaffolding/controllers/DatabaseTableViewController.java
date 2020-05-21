@@ -33,7 +33,14 @@ public class DatabaseTableViewController implements IAspectAware, IDatabaseAware
     private IAspectManager aspectManager;
     private IApplicationManager applicationManager;
     private IStorageManager storageManager;
+
+    private ContractorEditorViewController contractorEditorViewController;
     private DatabaseAspect databaseAspect;
+
+    @Autowired
+    public void setContractorEditorViewController(ContractorEditorViewController contractorEditorViewController) {
+        this.contractorEditorViewController = contractorEditorViewController;
+    }
 
     @Autowired
     public void setApplicationManager(IApplicationManager applicationManager) {
@@ -89,7 +96,6 @@ public class DatabaseTableViewController implements IAspectAware, IDatabaseAware
     }
 
     private void setupReportAspect() {
-
         tableView.setPlaceholder(new Label("Brak raportów w bazie danych"));
     }
 
@@ -122,5 +128,21 @@ public class DatabaseTableViewController implements IAspectAware, IDatabaseAware
     @Override
     public void onDatabaseClose() {
 
+    }
+
+    public void editActiveContractor() {
+        ContractorFX activeContractorFX = contractorTableView.getSelectionModel().getSelectedItem();
+        if(activeContractorFX != null)
+            contractorEditorViewController.editContractor(activeContractorFX);
+    }
+
+    public void addNewContractor() {
+        contractorEditorViewController.newContractor();
+    }
+
+    public void deleteActiveContractor() {
+        ContractorFX activeContractorFX = contractorTableView.getSelectionModel().getSelectedItem();
+        if(activeContractorFX != null)
+            storageManager.getContractorStorage().deleteContractor(activeContractorFX);
     }
 }

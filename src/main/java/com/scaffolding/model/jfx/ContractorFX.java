@@ -81,12 +81,13 @@ public class ContractorFX {
         this.phone.set(phone);
     }
 
-    public void update() {
+    public Contractor update() {
         contractor.setName(getName());
         contractor.setAddress(getAddress());
         contractor.setPerson(getPerson());
         contractor.setEmail(getEmail());
         contractor.setPhone(getPhone());
+        return contractor;
     }
     public Contractor getContractor() {
         return contractor;

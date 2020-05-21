@@ -20,8 +20,8 @@ import java.util.List;
 public class ContractorStorage implements IContractorStorage, IDatabaseAware {
 
     private final IGenericDAO<Contractor> contractorDAO;
-    private List<ContractorFX> contractorList = new ArrayList<>();
-    private List<ListChangeListener.Change<ContractorFX>> changeList = new ArrayList<>();
+    private final List<ContractorFX> contractorList = new ArrayList<>();
+    private ObservableList<ContractorFX> fxList;
     private boolean loaded;
 
     @Autowired
@@ -33,22 +33,28 @@ public class ContractorStorage implements IContractorStorage, IDatabaseAware {
     @Override
     public ObservableList<ContractorFX> getContractorList() {
         if (!loaded) {
-            changeList.clear();
             List<Contractor> contractors = contractorDAO.findAll();
             for (Contractor contractor : contractors) {
                 ContractorFX contractorFX = new ContractorFX(contractor);
                 contractorList.add(contractorFX);
             }
+            fxList = FXCollections.observableList(contractorList);
             loaded = true;
         }
-        ObservableList<ContractorFX> fxList = FXCollections.observableList(contractorList);
-        fxList.addListener(new ListChangeListener<ContractorFX>() {
-            @Override
-            public void onChanged(Change<? extends ContractorFX> change) {
 
-            }
-        });
-        return FXCollections.observableList(contractorList);
+        return fxList;
+    }
+
+    @Override
+    public void updateContractor(ContractorFX contractorFX) {
+        contractorDAO.saveOrUpdate(contractorFX.update());
+        if(!fxList.contains(contractorFX)) fxList.add(contractorFX);
+    }
+
+    @Override
+    public void deleteContractor(ContractorFX contractorFX) {
+        contractorDAO.delete(contractorFX.update());
+        fxList.remove(contractorFX);
     }
 
     @Override

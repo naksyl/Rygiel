@@ -119,11 +119,14 @@ public class ApplicationManager implements IApplicationManager {
         openedFile = ResourceMapper.getExampleDatabaseFile();
         if(sessionManager.openSession(openedFile, ""))
             setApplicationAspect(ApplicationAspect.STATISTICS);
-        sessionManager.getCurrentSession().beginTransaction();
+        //sessionManager.getCurrentSession().beginTransaction();
+        //sessionManager.getContractorDAO().deleteAll();
         Contractor contractor = new Contractor("sgf", "sfgsrf", "igv", "isfsfi", "sid");
-        sessionManager.getCurrentSession().save(contractor);
-        System.out.println(sessionManager.getCurrentSession().createQuery("from Contractor ").list().get(0));
-        sessionManager.getCurrentSession().getTransaction().commit();
+        sessionManager.getContractorDAO().saveOrUpdate(contractor);
+        contractor.setName("Tomasz");
+        sessionManager.getContractorDAO().saveOrUpdate(contractor);
+        //System.out.println(sessionManager.getCurrentSession().createQuery("from Contractor ").list().get(0));
+        //sessionManager.getCurrentSession().getTransaction().commit();
     }
 
     @Override

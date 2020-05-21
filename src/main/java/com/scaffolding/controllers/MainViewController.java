@@ -6,6 +6,7 @@ import com.scaffolding.factories.ResourceMapper;
 import com.scaffolding.interfaces.IApplicationManager;
 import com.scaffolding.interfaces.IAspectAware;
 import com.scaffolding.interfaces.IViewManager;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
@@ -27,13 +28,12 @@ public class MainViewController implements Initializable, IAspectAware {
     private HBox aspectBox;
 
     @FXML
-    TableView tableView;
-
-    @FXML
     private Accordion accordion;
 
     private IApplicationManager applicationManager;
     private IViewManager viewManager;
+
+    private DatabaseTableViewController tableViewController;
     private ViewType currentViewType = ViewType.WELCOME_VIEW;
 
     @Autowired
@@ -42,8 +42,13 @@ public class MainViewController implements Initializable, IAspectAware {
     }
 
     @Autowired
-    public void setViewManager(IViewManager viewManager) {
+    public void setViewManager(@Lazy IViewManager viewManager) {
         this.viewManager = viewManager;
+    }
+
+    @Autowired
+    public void setTableViewController(@Lazy DatabaseTableViewController tableViewController) {
+        this.tableViewController = tableViewController;
     }
 
     @Override
@@ -108,5 +113,17 @@ public class MainViewController implements Initializable, IAspectAware {
 
     public void openFile() {
         applicationManager.openFile();
+    }
+
+    public void editContractorButton() {
+        tableViewController.editActiveContractor();
+    }
+
+    public void deleteContractorButton() {
+        tableViewController.deleteActiveContractor();
+    }
+
+    public void newContractorButton() {
+        tableViewController.addNewContractor();
     }
 }

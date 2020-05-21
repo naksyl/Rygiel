@@ -20,9 +20,9 @@
           </TitledPane>
             <TitledPane animated="false" text="Kontrahenci">
                 <VBox alignment="TOP_CENTER" spacing="10.0">
-                    <Button defaultButton="true" mnemonicParsing="false" text="Nowy" />
-                    <Button mnemonicParsing="false" text="Edytuj" />
-                    <Button mnemonicParsing="false" text="Usuń" />
+                    <Button defaultButton="true" mnemonicParsing="false" onAction="#newContractorButton" text="Nowy" />
+                    <Button mnemonicParsing="false" onAction="#editContractorButton" text="Edytuj" />
+                    <Button mnemonicParsing="false" onAction="#deleteContractorButton" text="Usuń" />
                 </VBox>
             </TitledPane>
             <TitledPane animated="false" text="Zlecenia">
