@@ -20,18 +20,19 @@
           </TitledPane>
             <TitledPane animated="false" text="Kontrahenci">
                 <VBox alignment="TOP_CENTER" spacing="10.0">
-                    <Button defaultButton="true" mnemonicParsing="false" onAction="#newContractorButton" text="Nowy" />
+                    <Button defaultButton="true" mnemonicParsing="false" onAction="#newContractorButton" text="Dodaj" />
                     <Button mnemonicParsing="false" onAction="#editContractorButton" text="Edytuj" />
                     <Button mnemonicParsing="false" onAction="#deleteContractorButton" text="Usuń" />
+                  <Button layoutX="61.0" layoutY="92.0" mnemonicParsing="false" onAction="#newOrderButton" text="Nowe zlecenie" />
                 </VBox>
             </TitledPane>
             <TitledPane animated="false" text="Zlecenia">
                <content>
                   <VBox alignment="TOP_CENTER" spacing="10.0">
                      <children>
-                        <Button defaultButton="true" mnemonicParsing="false" text="Nowy" />
-                        <Button mnemonicParsing="false" text="Edytuj" />
-                        <Button mnemonicParsing="false" text="Usuń" />
+                        <Button defaultButton="true" mnemonicParsing="false" onAction="#newOrderButton2" text="Nowy" />
+                        <Button mnemonicParsing="false" onAction="#editOrderButton" text="Edytuj" />
+                        <Button mnemonicParsing="false" onAction="#deleteOrderButton" text="Usuń" />
                      </children>
                   </VBox>
                </content>

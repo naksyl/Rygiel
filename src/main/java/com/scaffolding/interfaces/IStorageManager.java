@@ -1,6 +1,10 @@
 package com.scaffolding.interfaces;
 
+import com.scaffolding.model.jfx.ContractorFX;
+import com.scaffolding.model.jfx.OrderFX;
+
 public interface IStorageManager {
 
-    IContractorStorage getContractorStorage();
+    IStorage<OrderFX> getOrderStorage();
+    IStorage<ContractorFX> getContractorStorage();
 }

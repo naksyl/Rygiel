@@ -3,6 +3,7 @@ package com.scaffolding.controllers;
 import com.scaffolding.enums.ViewType;
 import com.scaffolding.interfaces.IApplicationManager;
 import com.scaffolding.interfaces.IContractorStorage;
+import com.scaffolding.interfaces.IStorage;
 import com.scaffolding.model.Contractor;
 import com.scaffolding.model.jfx.ContractorFX;
 import javafx.fxml.FXML;
@@ -25,7 +26,7 @@ public class ContractorEditorViewController implements Initializable {
     @FXML public TextField phoneTextField;
 
     private IApplicationManager applicationManager;
-    private IContractorStorage contractorStorage;
+    private IStorage<ContractorFX> contractorStorage;
     private ContractorFX contractor;
 
     @Autowired
@@ -34,7 +35,7 @@ public class ContractorEditorViewController implements Initializable {
     }
 
     @Autowired
-    public void setContractorStorage(@Lazy IContractorStorage contractorStorage) {
+    public void setContractorStorage(@Lazy IStorage<ContractorFX> contractorStorage) {
         this.contractorStorage = contractorStorage;
     }
 
@@ -62,7 +63,7 @@ public class ContractorEditorViewController implements Initializable {
     }
 
     public void saveAction() {
-        contractorStorage.updateContractor(contractor);
+        contractorStorage.updateItem(contractor);
         applicationManager.closeActiveWindow();
     }
 

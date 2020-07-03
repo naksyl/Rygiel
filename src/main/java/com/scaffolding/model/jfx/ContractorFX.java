@@ -92,4 +92,9 @@ public class ContractorFX {
     public Contractor getContractor() {
         return contractor;
     }
+
+    @Override
+    public String toString() {
+        return contractor.getName();
+    }
 }

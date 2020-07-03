@@ -6,6 +6,7 @@ import com.scaffolding.interfaces.IDatabaseAware;
 import com.scaffolding.interfaces.IGenericDAO;
 import com.scaffolding.interfaces.IHibernateSessionManager;
 import com.scaffolding.model.Contractor;
+import com.scaffolding.model.Orders;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +14,6 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.List;
 
 @Component
@@ -22,10 +22,12 @@ public class HibernateSessionManager implements IHibernateSessionManager {
     private SessionFactory sessionFactory;
     private List<IDatabaseAware> databaseAwareList;
     private final IGenericDAO<Contractor> contractorDAO;
+    private final IGenericDAO<Orders> orderDAO;
     private boolean opened;
 
     public HibernateSessionManager() {
         contractorDAO = DAOFactory.getContractorDAO(this);
+        orderDAO = DAOFactory.getOrderDAO(this);
     }
 
     @Autowired
@@ -36,10 +38,10 @@ public class HibernateSessionManager implements IHibernateSessionManager {
     @Override
     public boolean openSession(File fileName, String password) {
         closeSession();
-        sessionFactory = HibernateSessionFactory.getSessionFactory(fileName,password);
+        sessionFactory = HibernateSessionFactory.getSessionFactory(fileName, password);
         contractorDAO.setSessionManager(this);
-
-        for(IDatabaseAware databaseAware : databaseAwareList)
+        orderDAO.setSessionManager(this);
+        for (IDatabaseAware databaseAware : databaseAwareList)
             databaseAware.onDatabaseOpen(fileName);
         opened = true;
         return true;
@@ -57,7 +59,7 @@ public class HibernateSessionManager implements IHibernateSessionManager {
             sessionFactory.getCurrentSession().flush();
             sessionFactory.getCurrentSession().getTransaction().commit();
 
-            for(IDatabaseAware databaseAware : databaseAwareList)
+            for (IDatabaseAware databaseAware : databaseAwareList)
                 databaseAware.onDatabaseClose();
             sessionFactory.close();
         }
@@ -72,5 +74,10 @@ public class HibernateSessionManager implements IHibernateSessionManager {
     @Override
     public IGenericDAO<Contractor> getContractorDAO() {
         return contractorDAO;
+    }
+
+    @Override
+    public IGenericDAO<Orders> getOrderDAO() {
+        return orderDAO;
     }
 }

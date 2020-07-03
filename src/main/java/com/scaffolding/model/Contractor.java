@@ -1,21 +1,25 @@
 package com.scaffolding.model;
 
-import javafx.beans.property.SimpleStringProperty;
-
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
-@Table()
+@Table(name = "contractor")
 public class Contractor {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private int id;
     private String name;
     private String address;
     private String person;
     private String email;
     private String phone;
+
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "contractor")
+    private List<Orders> orders;
 
     public Contractor() {
     }
@@ -74,6 +78,22 @@ public class Contractor {
 
     public void setPhone(String phone) {
         this.phone = phone;
+    }
+
+    public List<Orders> getOrders() {
+        return orders;
+    }
+
+    public void setOrders(List<Orders> orders) {
+        this.orders = orders;
+    }
+
+    public void addOrder(Orders order) {
+        if(orders == null) {
+            orders = new ArrayList<>();
+        }
+        order.setContractor(this);
+        orders.add(order);
     }
 
     @Override

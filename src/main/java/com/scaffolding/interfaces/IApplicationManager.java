@@ -14,6 +14,7 @@ public interface IApplicationManager {
     void run(Stage stage);
     void showView(ViewType view);
     Stage showWindow(ViewType view, String title);
+    void showWarning(String message);
     Stage getActiveWindow();
     void closeActiveWindow();
     void saveFile();

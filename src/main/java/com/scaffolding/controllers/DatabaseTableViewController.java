@@ -4,42 +4,69 @@ import com.scaffolding.enums.ApplicationAspect;
 import com.scaffolding.enums.DatabaseAspect;
 import com.scaffolding.interfaces.*;
 import com.scaffolding.model.jfx.ContractorFX;
+import com.scaffolding.model.jfx.OrderFX;
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.layout.StackPane;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 
 import java.io.File;
+import java.net.URL;
+import java.util.ResourceBundle;
 
 @Component
-public class DatabaseTableViewController implements IAspectAware, IDatabaseAware {
+public class DatabaseTableViewController implements IAspectAware, IDatabaseAware, Initializable {
 
-    @FXML public StackPane stackPane;
+    @FXML
+    public TableView<ContractorFX> contractorTableView;
+    @FXML
+    public TableColumn<ContractorFX, String> contractorNameColumn;
+    @FXML
+    public TableColumn<ContractorFX, String> contractorAddressColumn;
+    @FXML
+    public TableColumn<ContractorFX, String> contractorPersonColumn;
+    @FXML
+    public TableColumn<ContractorFX, String> contractorEmailColumn;
+    @FXML
+    public TableColumn<ContractorFX, String> contractorPhoneColumn;
 
-    @FXML public TableView<ContractorFX> contractorTableView;
-    @FXML public TableColumn<ContractorFX, String> contractorNameColumn;
-    @FXML public TableColumn<ContractorFX, String> contractorAddressColumn;
-    @FXML public TableColumn<ContractorFX, String> contractorPersonColumn;
-    @FXML public TableColumn<ContractorFX, String> contractorEmailColumn;
-    @FXML public TableColumn<ContractorFX, String> contractorPhoneColumn;
+    @FXML
+    public TableView<OrderFX> orderTableView;
+    @FXML
+    public TableColumn<OrderFX, String> orderDescriptionColumn;
+    @FXML
+    public TableColumn<OrderFX, String> orderDateColumn;
+    @FXML
+    public TableColumn<OrderFX, String> orderContractorColumn;
+    @FXML
+    public TableColumn<OrderFX, String> orderAddressColumn;
+    @FXML
+    public TableColumn<OrderFX, String> orderStatusColumn;
+    @FXML
+    public TableColumn<OrderFX, String> orderTypeColumn;
 
-    @FXML TableView tableView;
 
     private IAspectManager aspectManager;
     private IApplicationManager applicationManager;
     private IStorageManager storageManager;
 
     private ContractorEditorViewController contractorEditorViewController;
+    private OrderEditorViewController orderEditorViewController;
     private DatabaseAspect databaseAspect;
 
     @Autowired
     public void setContractorEditorViewController(ContractorEditorViewController contractorEditorViewController) {
         this.contractorEditorViewController = contractorEditorViewController;
+    }
+
+    @Autowired
+    public void setOrderEditorViewController(OrderEditorViewController orderEditorViewController) {
+        this.orderEditorViewController = orderEditorViewController;
     }
 
     @Autowired
@@ -67,19 +94,19 @@ public class DatabaseTableViewController implements IAspectAware, IDatabaseAware
         switch (applicationAspect) {
             case TABLE_CONTRACTOR:
                 databaseAspect = DatabaseAspect.TABLE_CONTRACTOR;
-                setupContractorAspect();
+                updateContractorAspect();
                 break;
             case TABLE_ORDER:
                 databaseAspect = DatabaseAspect.TABLE_ORDER;
-                setupOrderAspect();
+                updateOrderAspect();
                 break;
             case TABLE_BILL:
                 databaseAspect = DatabaseAspect.TABLE_BILL;
-                setupBillAspect();
+                updateBillAspect();
                 break;
             case TABLE_REPORT:
                 databaseAspect = DatabaseAspect.TABLE_REPORT;
-                setupReportAspect();
+                updateReportAspect();
                 break;
             case WELCOME:
             case STATISTICS:
@@ -87,38 +114,27 @@ public class DatabaseTableViewController implements IAspectAware, IDatabaseAware
                 databaseAspect = DatabaseAspect.NONE;
                 break;
         }
-        setupTableView();
     }
 
-    private void setupTableView() {
-//        if(databaseAspect != DatabaseAspect.NONE)
-//            contractorTableView.getItems().clear();
+    private void updateOrderAspect() {
+        storageManager.getOrderStorage().updateFromDatabase();
+        orderTableView.setItems(storageManager.getOrderStorage().getItemList());
+        orderTableView.toFront();
     }
 
-    private void setupReportAspect() {
-        tableView.setPlaceholder(new Label("Brak raportów w bazie danych"));
+    private void updateBillAspect() {
+
     }
 
-    private void setupBillAspect() {
-        tableView.setPlaceholder(new Label("Brak faktur w bazie danych"));
+    private void updateReportAspect() {
     }
 
-    private void setupOrderAspect() {
-        tableView.setPlaceholder(new Label("Brak zleceń w bazie danych"));
-    }
-
-    private void setupContractorAspect() {
-        //stackPane.
+    private void updateContractorAspect() {
+        storageManager.getContractorStorage().updateFromDatabase();
+        contractorTableView.setItems(storageManager.getContractorStorage().getItemList());
         contractorTableView.toFront();
-        contractorNameColumn.setCellValueFactory(new PropertyValueFactory<ContractorFX, String>("name"));
-        contractorAddressColumn.setCellValueFactory(new PropertyValueFactory<ContractorFX, String>("address"));
-        contractorPersonColumn.setCellValueFactory(new PropertyValueFactory<ContractorFX, String>("person"));
-        contractorEmailColumn.setCellValueFactory(new PropertyValueFactory<ContractorFX, String>("email"));
-        contractorPhoneColumn.setCellValueFactory(new PropertyValueFactory<ContractorFX, String>("phone"));
-        contractorTableView.setPlaceholder(new Label("Brak kontrahentów w bazie danych"));
-        if(applicationManager.hasOpenedFile())
-            contractorTableView.setItems(storageManager.getContractorStorage().getContractorList());
     }
+
 
     @Override
     public void onDatabaseOpen(File file) {
@@ -130,19 +146,73 @@ public class DatabaseTableViewController implements IAspectAware, IDatabaseAware
 
     }
 
-    public void editActiveContractor() {
-        ContractorFX activeContractorFX = contractorTableView.getSelectionModel().getSelectedItem();
-        if(activeContractorFX != null)
-            contractorEditorViewController.editContractor(activeContractorFX);
-    }
-
     public void addNewContractor() {
         contractorEditorViewController.newContractor();
     }
 
+    public void editActiveContractor() {
+        ContractorFX activeContractorFX = contractorTableView.getSelectionModel().getSelectedItem();
+        if (activeContractorFX != null)
+            contractorEditorViewController.editContractor(activeContractorFX);
+    }
+
     public void deleteActiveContractor() {
         ContractorFX activeContractorFX = contractorTableView.getSelectionModel().getSelectedItem();
-        if(activeContractorFX != null)
-            storageManager.getContractorStorage().deleteContractor(activeContractorFX);
+        if (activeContractorFX != null)
+            storageManager.getContractorStorage().deleteItem(activeContractorFX);
+    }
+
+    public void addNewOrder() {
+        ContractorFX activeContractorFX = contractorTableView.getSelectionModel().getSelectedItem();
+        if (activeContractorFX != null)
+            orderEditorViewController.newOrder(activeContractorFX);
+        else if (contractorTableView.getItems().size() > 0)
+            orderEditorViewController.newOrder(contractorTableView.getItems().get(0));
+        else
+            applicationManager.showWarning("Brak kontrahentów w bazie danych.\nZlecenie nie może istnieć bez kontrahenta");
+
+    }
+
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+        contractorNameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
+        contractorAddressColumn.setCellValueFactory(new PropertyValueFactory<>("address"));
+        contractorPersonColumn.setCellValueFactory(new PropertyValueFactory<>("person"));
+        contractorEmailColumn.setCellValueFactory(new PropertyValueFactory<>("email"));
+        contractorPhoneColumn.setCellValueFactory(new PropertyValueFactory<>("phone"));
+        contractorTableView.setPlaceholder(new Label("Brak kontrahentów w bazie danych"));
+
+        orderAddressColumn.setCellValueFactory(new PropertyValueFactory<>("address"));
+        orderContractorColumn.setCellValueFactory(new PropertyValueFactory<>("contractor"));
+        orderDateColumn.setCellValueFactory(new PropertyValueFactory<>("date"));
+        orderDescriptionColumn.setCellValueFactory(new PropertyValueFactory<>("description"));
+        orderStatusColumn.setCellValueFactory(new PropertyValueFactory<>("status"));
+        orderTypeColumn.setCellValueFactory(new PropertyValueFactory<>("type"));
+        orderTableView.setPlaceholder(new Label("Brak zleceń w bazie danych"));
+
+        if (applicationManager.hasOpenedFile()) {
+            contractorTableView.setItems(storageManager.getContractorStorage().getItemList());
+            orderTableView.setItems(storageManager.getOrderStorage().getItemList());
+        }
+    }
+
+    public void editOrder() {
+        if (orderTableView.getItems().size() > 0) {
+            OrderFX activeOrderFX = orderTableView.getSelectionModel().getSelectedItem();
+            if (activeOrderFX != null)
+                orderEditorViewController.editOrder(activeOrderFX);
+            else
+                applicationManager.showWarning("Nie wybrano zlecenia do edycji");
+        } else
+            applicationManager.showWarning("Brak zleceń w bazie danych");
+    }
+
+    public void deleteOrder() {
+        if (orderTableView.getItems().size() > 0) {
+            OrderFX activeOrderFX = orderTableView.getSelectionModel().getSelectedItem();
+            if (activeOrderFX != null)
+                storageManager.getOrderStorage().deleteItem(activeOrderFX);
+            else applicationManager.showWarning("Nie wybrano zlecenia do usunięcia");
+        } else applicationManager.showWarning("Brak zleceń w bazie danych");
     }
 }

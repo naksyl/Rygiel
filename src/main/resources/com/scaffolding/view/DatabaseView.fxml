@@ -8,7 +8,7 @@
 <VBox alignment="CENTER" prefHeight="422.0" prefWidth="599.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.scaffolding.controllers.DatabaseViewController">
     <fx:include source="ToolbarView.fxml" VBox.vgrow="NEVER" />
     <SplitPane dividerPositions="0.7904" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="260.0" prefWidth="1158.0" VBox.vgrow="ALWAYS">
-        <fx:include fx:id="anchorPaneTables" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" source="DatabaseTableView.fxml" />
+        <fx:include fx:id="anchorPaneTable" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" source="DatabaseTableView.fxml" />
         <GridPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="150.0" prefHeight="366.0" vgap="5.0" SplitPane.resizableWithParent="false">
             <columnConstraints>
                 <ColumnConstraints hgrow="ALWAYS" />

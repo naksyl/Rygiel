@@ -17,7 +17,8 @@ public class HibernateSessionFactory {
         if (fileName != null) {
             if (sessionFactory != null) sessionFactory.close();
             File dirPath = fileName.getParentFile();
-            String path = "jdbc:h2:file:" + dirPath.getAbsolutePath();
+            //String path = "jdbc:h2:file:" + dirPath.getAbsolutePath();
+            String path = "jdbc:h2:file:" + "./empty";
             Properties properties = new Properties();
             properties.put(Environment.DRIVER, "org.h2.Driver");
             properties.put(Environment.URL, path);
@@ -28,7 +29,8 @@ public class HibernateSessionFactory {
             properties.put(Environment.DIALECT, "org.hibernate.dialect.H2Dialect");
             properties.put(Environment.SHOW_SQL, true);
             properties.put(Environment.CURRENT_SESSION_CONTEXT_CLASS, "thread");
-            properties.put(Environment.HBM2DDL_AUTO, "update");
+            //properties.put(Environment.HBM2DDL_AUTO, "update");
+            properties.put(Environment.HBM2DDL_AUTO, "create");
             return new HibernateEntitiesConfiguration()
                     .setProperties(properties)
                     .buildSessionFactory();

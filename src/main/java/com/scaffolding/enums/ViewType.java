@@ -6,7 +6,8 @@ public enum ViewType {
     OPTIONS_VIEW,
     DATABASE_VIEW,
     WELCOME_VIEW,
-    CONTRACTOR_EDITOR_VIEW;
+    CONTRACTOR_EDITOR_VIEW,
+    ORDER_EDITOR_VIEW;
 
     @Override
     public String toString() {

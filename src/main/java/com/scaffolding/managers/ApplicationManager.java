@@ -8,6 +8,7 @@ import com.scaffolding.model.Contractor;
 import javafx.application.Platform;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
@@ -99,6 +100,15 @@ public class ApplicationManager implements IApplicationManager {
     }
 
     @Override
+    public void showWarning(String message) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setHeaderText("Informacja");
+        alert.setContentText(message);
+        alert.setTitle(APPLICATION_NAME);
+        alert.show();
+    }
+
+    @Override
     public Stage getActiveWindow() {
         return stages.peek();
     }
@@ -116,7 +126,8 @@ public class ApplicationManager implements IApplicationManager {
 
     @Override
     public void openExampleDatabase() {
-        openedFile = ResourceMapper.getExampleDatabaseFile();
+        //openedFile = ResourceMapper.getExampleDatabaseFile();
+        openedFile = new File("./empty");
         if(sessionManager.openSession(openedFile, ""))
             setApplicationAspect(ApplicationAspect.STATISTICS);
         //sessionManager.getCurrentSession().beginTransaction();

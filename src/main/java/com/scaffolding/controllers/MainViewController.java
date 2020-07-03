@@ -34,6 +34,7 @@ public class MainViewController implements Initializable, IAspectAware {
     private IViewManager viewManager;
 
     private DatabaseTableViewController tableViewController;
+
     private ViewType currentViewType = ViewType.WELCOME_VIEW;
 
     @Autowired
@@ -125,5 +126,21 @@ public class MainViewController implements Initializable, IAspectAware {
 
     public void newContractorButton() {
         tableViewController.addNewContractor();
+    }
+
+    public void newOrderButton() {
+        tableViewController.addNewOrder();
+    }
+
+    public void newOrderButton2() {
+        newOrderButton();
+    }
+
+    public void editOrderButton() {
+        tableViewController.editOrder();
+    }
+
+    public void deleteOrderButton() {
+        tableViewController.deleteOrder();
     }
 }

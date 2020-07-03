@@ -17,10 +17,18 @@
             <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
          </columnResizePolicy>
         </TableView>
-        <TableView fx:id="tableView" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="246.0" prefWidth="378.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+        <TableView fx:id="orderTableView" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="246.0" prefWidth="378.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <columnResizePolicy>
             <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
          </columnResizePolicy>
+         <columns>
+            <TableColumn fx:id="orderDateColumn" prefWidth="75.0" text="Data" />
+            <TableColumn fx:id="orderContractorColumn" prefWidth="75.0" text="Kontrahent" />
+            <TableColumn fx:id="orderDescriptionColumn" prefWidth="75.0" text="Opis" />
+            <TableColumn fx:id="orderAddressColumn" prefWidth="75.0" text="Adres" />
+            <TableColumn fx:id="orderTypeColumn" prefWidth="75.0" text="Typ" />
+            <TableColumn fx:id="orderStatusColumn" prefWidth="75.0" text="Status" />
+         </columns>
         </TableView>
    </children>
 </AnchorPane>
