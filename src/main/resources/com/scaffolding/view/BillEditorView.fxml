@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<VBox prefHeight="247.0" prefWidth="543.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.scaffolding.controllers.BillEditorViewController">
+   <children>
+      <GridPane alignment="CENTER" hgap="10.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" vgap="10.0">
+        <columnConstraints>
+          <ColumnConstraints halignment="RIGHT" hgrow="NEVER" />
+          <ColumnConstraints hgrow="ALWAYS" maxWidth="266.2" minWidth="0.0" />
+            <ColumnConstraints halignment="RIGHT" hgrow="ALWAYS" maxWidth="1.7976931348623157E308" minWidth="10.0" />
+            <ColumnConstraints halignment="RIGHT" hgrow="ALWAYS" maxWidth="1.7976931348623157E308" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints halignment="RIGHT" hgrow="ALWAYS" maxWidth="1.7976931348623157E308" minWidth="10.0" />
+            <ColumnConstraints halignment="RIGHT" hgrow="ALWAYS" maxWidth="1.7976931348623157E308" minWidth="10.0" prefWidth="100.0" />
+        </columnConstraints>
+        <rowConstraints>
+            <RowConstraints vgrow="SOMETIMES" />
+          <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+          <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+        </rowConstraints>
+         <children>
+            <Label text="1" GridPane.rowIndex="1" />
+            <Label text="3" GridPane.rowIndex="3" />
+            <Label text="4" GridPane.rowIndex="4" />
+            <Label text="2" GridPane.rowIndex="2" />
+            <Label text="Lp" />
+            <Label text="Nazwa pozycji" GridPane.columnIndex="1" />
+            <Label text="Montaż rusztowania" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+            <Label text="Demontaż rusztowania" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+            <Label text="Przegląd rusztowania" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+            <Label text="Roboczogodziny" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+            <Label text="m²" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+            <Label text="Jednostka" GridPane.columnIndex="2" />
+            <Label text="Ilość" GridPane.columnIndex="3" />
+            <Label text="Cena jednostkowa" GridPane.columnIndex="4" />
+            <Label text="Kwota" GridPane.columnIndex="5" />
+            <Label text="m²" GridPane.columnIndex="2" GridPane.rowIndex="2" />
+            <Label text="h" GridPane.columnIndex="2" GridPane.rowIndex="3" />
+            <Label text="h" GridPane.columnIndex="2" GridPane.rowIndex="4" />
+            <Label fx:id="assemblyCountLabel" text="0" GridPane.columnIndex="3" GridPane.rowIndex="1" />
+            <Label fx:id="dissassemblyCountLabel" text="0" GridPane.columnIndex="3" GridPane.rowIndex="2" />
+            <Label fx:id="reviewCountLabel" text="0" GridPane.columnIndex="3" GridPane.rowIndex="3" />
+            <Label fx:id="workhoursCountLabel" text="0" GridPane.columnIndex="3" GridPane.rowIndex="4" />
+            <Label text="8.5zł" GridPane.columnIndex="4" GridPane.rowIndex="1" />
+            <Label text="5.2zł" GridPane.columnIndex="4" GridPane.rowIndex="2" />
+            <Label text="28zł" GridPane.columnIndex="4" GridPane.rowIndex="3" />
+            <Label text="40zł" GridPane.columnIndex="4" GridPane.rowIndex="4" />
+            <Label fx:id="assemblyTotalLabel" text="0" GridPane.columnIndex="5" GridPane.rowIndex="1" />
+            <Label fx:id="disassemblyTotalLabel" text="0" GridPane.columnIndex="5" GridPane.rowIndex="2" />
+            <Label fx:id="reviewTotalLabel" text="0" GridPane.columnIndex="5" GridPane.rowIndex="3" />
+            <Label fx:id="workhoursTotalLabel" text="0" GridPane.columnIndex="5" GridPane.rowIndex="4" />
+         </children>
+         <padding>
+            <Insets left="10.0" right="10.0" top="10.0" />
+         </padding>
+      </GridPane>
+      <HBox alignment="BOTTOM_RIGHT" prefHeight="62.0" prefWidth="594.0" spacing="10.0" VBox.vgrow="ALWAYS">
+         <children>
+            <HBox alignment="BOTTOM_LEFT" prefHeight="100.0" prefWidth="200.0" HBox.hgrow="ALWAYS">
+               <children>
+                  <Label text="Do zapłaty:">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="totalLabel" text="16523.25zł">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                     <padding>
+                        <Insets left="10.0" />
+                     </padding>
+                  </Label>
+               </children>
+            </HBox>
+            <Button cancelButton="true" mnemonicParsing="false" onAction="#cancelAction" text="Anuluj">
+               <HBox.margin>
+                  <Insets bottom="5.0" />
+               </HBox.margin></Button>
+            <Button defaultButton="true" mnemonicParsing="false" onAction="#saveAction" text="Zapisz">
+               <HBox.margin>
+                  <Insets bottom="5.0" />
+               </HBox.margin></Button>
+         </children>
+         <padding>
+            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+         </padding>
+      </HBox>
+   </children>
+</VBox>

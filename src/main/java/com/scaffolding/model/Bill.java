@@ -1,7 +1,7 @@
 package com.scaffolding.model;
 
 import javax.persistence.*;
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.List;
 
 @Entity
@@ -20,10 +20,11 @@ public class Bill {
     private Orders order;
 
     private String number;
-    private Date date;
-    private boolean payed;
+    private LocalDate date;
+    private String payed;
 
     public Bill() {
+        date = LocalDate.now();
     }
 
     public int getId() {
@@ -50,25 +51,25 @@ public class Bill {
         this.number = number;
     }
 
-    public Date getDate() {
+    public LocalDate getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(LocalDate date) {
         this.date = date;
     }
 
-    public boolean isPayed() {
+    public String getPayed() {
         return payed;
     }
 
-    public void setPayed(boolean payed) {
+    public void setPayed(String payed) {
         this.payed = payed;
     }
 
     public double getTotalPrice() {
         double p = 0;
-        List<ReportItem> items = null;//= order.getReport().getItems();
+        List<ReportItem> items = order.getReport().getItems();
         if (items != null) {
             for (ReportItem item : items) {
                 p += item.getPrice();

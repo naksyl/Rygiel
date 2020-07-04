@@ -2,7 +2,7 @@ package com.scaffolding.model;
 
 public enum OrderStatus {
     OPENED("otwarte"),
-    FINISHED("ukończone"),
+    FINISHED("wykonane"),
     NOT_PAYED("nieopłacone"),
     CLOSED("zamknięte");
 

@@ -6,6 +6,6 @@ public interface IStorage<T> {
     ObservableList<T> getItemList();
     void updateItem(T item);
     void deleteItem(T item);
-
+    T findById(int id);
     void updateFromDatabase();
 }

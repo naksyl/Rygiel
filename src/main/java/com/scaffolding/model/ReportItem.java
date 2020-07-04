@@ -12,23 +12,21 @@ public class ReportItem {
     @Column(name = "id")
     private int id;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE,
+            CascadeType.PERSIST, CascadeType.REFRESH})
     @JoinColumn(name = "report_id")
     private Report report;
 
     private ReportItemType type;
-    private String unit;
-    private int pieces;
+    private double pieces;
     private double price;
 
     public ReportItem() {
     }
 
-    public ReportItem(ReportItemType type, String unit, int pieces, double price) {
+    public ReportItem(ReportItemType type,double pieces) {
         this.type = type;
-        this.unit = unit;
         this.pieces = pieces;
-        this.price = price;
     }
 
     public int getId() {
@@ -47,19 +45,11 @@ public class ReportItem {
         this.type = type;
     }
 
-    public String getUnit() {
-        return unit;
-    }
-
-    public void setUnit(String unit) {
-        this.unit = unit;
-    }
-
-    public int getPieces() {
+    public double getPieces() {
         return pieces;
     }
 
-    public void setPieces(int pieces) {
+    public void setPieces(double pieces) {
         this.pieces = pieces;
     }
 
@@ -77,5 +67,10 @@ public class ReportItem {
 
     public void setReport(Report report) {
         this.report = report;
+    }
+
+    @Override
+    public String toString() {
+        return type.toString() + " " + pieces+ type.getUnit();
     }
 }

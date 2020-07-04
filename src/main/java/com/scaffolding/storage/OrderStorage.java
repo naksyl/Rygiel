@@ -1,13 +1,13 @@
 package com.scaffolding.storage;
 
-import com.scaffolding.interfaces.IDatabaseAware;
-import com.scaffolding.interfaces.IGenericDAO;
-import com.scaffolding.interfaces.IHibernateSessionManager;
-import com.scaffolding.interfaces.IStorage;
+import com.scaffolding.interfaces.*;
 import com.scaffolding.model.Orders;
 import com.scaffolding.model.jfx.OrderFX;
+import com.scaffolding.model.jfx.ReportFX;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 
 import java.io.File;
@@ -21,6 +21,12 @@ public class OrderStorage implements IStorage<OrderFX>, IDatabaseAware {
     private final List<OrderFX> orderList = new ArrayList<>();
     private ObservableList<OrderFX> fxList;
     private boolean loaded;
+    private IStorageManager storageManager;
+
+    @Autowired
+    public void setStorageManager(@Lazy IStorageManager storageManager) {
+        this.storageManager = storageManager;
+    }
 
     public OrderStorage(IHibernateSessionManager sessionManager) {
         orderDAO = sessionManager.getOrderDAO();
@@ -49,11 +55,36 @@ public class OrderStorage implements IStorage<OrderFX>, IDatabaseAware {
     }
 
     @Override
+    public OrderFX findById(int id) {
+        OrderFX found = null;
+        if(!loaded && storageManager.hasOpenedFile()) updateFromDatabase();
+        if (loaded) {
+            for (OrderFX fx : fxList) {
+                if (fx.getOrder().getId() == id) {
+                    found = fx;
+                    break;
+                }
+            }
+        }
+        return found;
+    }
+
+    @Override
     public void updateFromDatabase() {
         orderList.clear();
         List<Orders> orders = orderDAO.findAll();
         for (Orders order : orders) {
             OrderFX orderFX = new OrderFX(order);
+            orderFX.setContractorFX(storageManager.getContractorStorage()
+                    .findById(order.getId()));
+            if (order.getReport() != null) {
+                orderFX.setReportFX(storageManager.getReportStorage()
+                        .findById(order.getReport().getId()));
+            }
+            if (order.getBill() != null) {
+                orderFX.setBillFX(storageManager.getBillStorage()
+                        .findById(order.getBill().getId()));
+            }
             orderList.add(orderFX);
         }
         fxList = FXCollections.observableList(orderList);
@@ -62,7 +93,7 @@ public class OrderStorage implements IStorage<OrderFX>, IDatabaseAware {
 
     @Override
     public void onDatabaseOpen(File file) {
-
+        updateFromDatabase();
     }
 
     @Override

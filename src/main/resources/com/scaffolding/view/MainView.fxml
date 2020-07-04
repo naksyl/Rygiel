@@ -5,45 +5,33 @@
 
 <HBox fx:id="aspectBox" minHeight="300.0" minWidth="500.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.scaffolding.controllers.MainViewController">
    <children>
-      <Accordion fx:id="accordion" minHeight="-Infinity" minWidth="-Infinity" prefHeight="382.0" prefWidth="146.0">
+      <Accordion fx:id="accordion" minHeight="-Infinity" minWidth="-Infinity" prefHeight="350.0" prefWidth="160.0">
         <panes>
-          <TitledPane animated="false" text="Menu główne">
+          <TitledPane animated="false" prefHeight="228.0" prefWidth="154.0" text="Menu główne">
             <content>
                 <VBox alignment="TOP_CENTER" prefHeight="322.0" prefWidth="144.0" spacing="10.0">
-                    <Button defaultButton="true" mnemonicParsing="false" text="Nowy pllik" />
+                    <Button defaultButton="true" mnemonicParsing="false" onAction="#newFileButton" text="Nowy pllik" />
                     <Button mnemonicParsing="false" onAction="#openFile" text="Otwórz..." />
-                    <Button mnemonicParsing="false" text="Zapisz" />
-                    <Button mnemonicParsing="false" text="Zapisz jako.." />
                     <Button layoutX="45.0" layoutY="128.0" mnemonicParsing="false" onAction="#closeApplication" text="Zakończ program" />
                 </VBox>
             </content>
           </TitledPane>
             <TitledPane animated="false" text="Kontrahenci">
                 <VBox alignment="TOP_CENTER" spacing="10.0">
-                    <Button defaultButton="true" mnemonicParsing="false" onAction="#newContractorButton" text="Dodaj" />
-                    <Button mnemonicParsing="false" onAction="#editContractorButton" text="Edytuj" />
-                    <Button mnemonicParsing="false" onAction="#deleteContractorButton" text="Usuń" />
-                  <Button layoutX="61.0" layoutY="92.0" mnemonicParsing="false" onAction="#newOrderButton" text="Nowe zlecenie" />
+                    <Button defaultButton="true" mnemonicParsing="false" onAction="#newContractorButton" text="Dodaj kontrahenta" />
+                    <Button fx:id="editContractorBtn" disable="true" mnemonicParsing="false" onAction="#editContractorButton" text="Edytuj kontrahenta" />
+                    <Button fx:id="deleteContractorBtn" disable="true" mnemonicParsing="false" onAction="#deleteContractorButton" text="Usuń kontrahenta" />
+                  <Button fx:id="newOrderBtn" disable="true" layoutX="61.0" layoutY="92.0" mnemonicParsing="false" onAction="#newOrderButton" text="Nowe zlecenie" />
                 </VBox>
             </TitledPane>
             <TitledPane animated="false" text="Zlecenia">
                <content>
                   <VBox alignment="TOP_CENTER" spacing="10.0">
                      <children>
-                        <Button defaultButton="true" mnemonicParsing="false" onAction="#newOrderButton2" text="Nowy" />
-                        <Button mnemonicParsing="false" onAction="#editOrderButton" text="Edytuj" />
-                        <Button mnemonicParsing="false" onAction="#deleteOrderButton" text="Usuń" />
-                     </children>
-                  </VBox>
-               </content>
-            </TitledPane>
-            <TitledPane animated="false" layoutX="10.0" layoutY="61.0" text="Faktury">
-               <content>
-                  <VBox alignment="TOP_CENTER" spacing="10.0">
-                     <children>
-                        <Button defaultButton="true" mnemonicParsing="false" text="Nowy" />
-                        <Button mnemonicParsing="false" text="Edytuj" />
-                        <Button mnemonicParsing="false" text="Usuń" />
+                        <Button fx:id="editOrderBtn" disable="true" mnemonicParsing="false" onAction="#editOrderButton" text="Edytuj zlecenie" />
+                        <Button fx:id="deleteOrderBtn" disable="true" mnemonicParsing="false" onAction="#deleteOrderButton" text="Usuń zlecenie" />
+                        <Button fx:id="editReportBtn" disable="true" layoutX="38.0" layoutY="92.0" mnemonicParsing="false" onAction="#editReportButton" text="Dodaj/edytuj raport" />
+                        <Button fx:id="editBillBtn" disable="true" layoutX="22.0" layoutY="128.0" mnemonicParsing="false" onAction="#editBillButton" text="Dodaj/edytuj fakturę" />
                      </children>
                   </VBox>
                </content>
@@ -52,18 +40,23 @@
                <content>
                   <VBox alignment="TOP_CENTER" spacing="10.0">
                      <children>
-                        <Button defaultButton="true" mnemonicParsing="false" text="Nowy" />
-                        <Button mnemonicParsing="false" text="Edytuj" />
-                        <Button mnemonicParsing="false" text="Usuń" />
+                        <Button fx:id="editReportReportBtn" disable="true" mnemonicParsing="false" onAction="#editReportButton" text="Edytuj raport" />
+                        <Button fx:id="deleteReportReportBtn" disable="true" mnemonicParsing="false" onAction="#deleteReportButton" text="Usuń raport" />
+                        <Button fx:id="editBillReportBtn" disable="true" layoutX="43.0" layoutY="92.0" mnemonicParsing="false" onAction="#editBillButton" text="Dodaj/edytuj fakturę" />
                      </children>
                   </VBox>
                </content>
             </TitledPane>
-            <TitledPane animated="false" text="Ustawienia">
-                <VBox spacing="10.0">
-                    <CheckBox maxWidth="1.7976931348623157E308" mnemonicParsing="false" prefHeight="34.0" prefWidth="126.0" text="Automatycznie otwieraj ostatni plik" wrapText="true" />
-                    <CheckBox mnemonicParsing="false" prefHeight="18.0" text="Autozapis" />
-                </VBox>
+            <TitledPane animated="false" layoutX="10.0" layoutY="61.0" text="Faktury">
+               <content>
+                  <VBox alignment="TOP_CENTER" spacing="10.0">
+                     <children>
+                        <Button mnemonicParsing="false" onAction="#editBillButton" text="Edytuj fakturę" />
+                        <Button mnemonicParsing="false" onAction="#deleteBillButton" text="Usuń fakturę" />
+                        <Button layoutX="40.0" layoutY="92.0" mnemonicParsing="false" onAction="#markAsPayedButton" text="Oznacz jako opłacona" />
+                     </children>
+                  </VBox>
+               </content>
             </TitledPane>
         </panes>
       </Accordion>

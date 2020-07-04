@@ -16,6 +16,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
 import java.util.Properties;
 import java.util.Stack;
 
@@ -68,7 +70,7 @@ public class ApplicationManager implements IApplicationManager {
     public void run(Stage stage) {
         this.primaryStage = stage;
         primaryStage.setOnCloseRequest(windowEvent -> {
-            if(windowEvent.getEventType() == WindowEvent.WINDOW_CLOSE_REQUEST) {
+            if (windowEvent.getEventType() == WindowEvent.WINDOW_CLOSE_REQUEST) {
                 close();
             }
         });
@@ -121,23 +123,28 @@ public class ApplicationManager implements IApplicationManager {
 
     @Override
     public void openFile() {
-
+        if (hasOpenedFile()) {
+            sessionManager.closeSession();
+            openedFile = null;
+        }
+        File temp = fileChooser.showOpenDialog(stages.peek());
+        if (temp != null)
+            if (Files.exists(temp.toPath())) {
+                System.out.println("Otwieram baze " + temp.getAbsolutePath());
+                if (sessionManager.openSession(temp, "")) {
+                    openedFile = temp;
+                    updateTitle();
+                    setApplicationAspect(ApplicationAspect.STATISTICS);
+                }
+            }
     }
 
     @Override
     public void openExampleDatabase() {
-        //openedFile = ResourceMapper.getExampleDatabaseFile();
         openedFile = new File("./empty");
-        if(sessionManager.openSession(openedFile, ""))
+        if (sessionManager.openSession(openedFile, "")) {
             setApplicationAspect(ApplicationAspect.STATISTICS);
-        //sessionManager.getCurrentSession().beginTransaction();
-        //sessionManager.getContractorDAO().deleteAll();
-        Contractor contractor = new Contractor("sgf", "sfgsrf", "igv", "isfsfi", "sid");
-        sessionManager.getContractorDAO().saveOrUpdate(contractor);
-        contractor.setName("Tomasz");
-        sessionManager.getContractorDAO().saveOrUpdate(contractor);
-        //System.out.println(sessionManager.getCurrentSession().createQuery("from Contractor ").list().get(0));
-        //sessionManager.getCurrentSession().getTransaction().commit();
+        }
     }
 
     @Override
@@ -146,8 +153,27 @@ public class ApplicationManager implements IApplicationManager {
     }
 
     @Override
-    public void saveFile() {
+    public void newFile() {
+        if (hasOpenedFile()) {
+            sessionManager.closeSession();
+            openedFile = null;
+        }
+        File newFile = fileChooser.showSaveDialog(stages.peek());
+        if (newFile != null) {
+            System.out.println("Otwieram baze " + newFile.getAbsolutePath());
+            if (sessionManager.openSession(newFile, "")) {
+                openedFile = newFile;
+                updateTitle();
+                setApplicationAspect(ApplicationAspect.STATISTICS);
+            }
+        }
 
+    }
+
+    @Override
+    public void saveAs() {
+        File saved = fileChooser.showSaveDialog(stages.peek());
+        System.out.println(saved);
     }
 
     @Override
@@ -159,7 +185,11 @@ public class ApplicationManager implements IApplicationManager {
     private void setupFileChooser() {
         fileChooser = new FileChooser();
         fileChooser.setInitialDirectory(new File(applicationProperties.getProperty("database.home")));
-        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Baza danych rygla", "*.db"));
+        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Baza danych rygla", "*.mv.db"));
         fileChooser.setTitle("Otwórz bazę danych");
+    }
+
+    private void updateTitle() {
+        primaryStage.setTitle(APPLICATION_NAME + " [" + openedFile + "]");
     }
 }

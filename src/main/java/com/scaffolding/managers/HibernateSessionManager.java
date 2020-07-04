@@ -5,8 +5,10 @@ import com.scaffolding.factories.HibernateSessionFactory;
 import com.scaffolding.interfaces.IDatabaseAware;
 import com.scaffolding.interfaces.IGenericDAO;
 import com.scaffolding.interfaces.IHibernateSessionManager;
+import com.scaffolding.model.Bill;
 import com.scaffolding.model.Contractor;
 import com.scaffolding.model.Orders;
+import com.scaffolding.model.Report;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,11 +25,15 @@ public class HibernateSessionManager implements IHibernateSessionManager {
     private List<IDatabaseAware> databaseAwareList;
     private final IGenericDAO<Contractor> contractorDAO;
     private final IGenericDAO<Orders> orderDAO;
+    private final IGenericDAO<Report> reportDAO;
+    private final IGenericDAO<Bill> billDAO;
     private boolean opened;
 
     public HibernateSessionManager() {
         contractorDAO = DAOFactory.getContractorDAO(this);
         orderDAO = DAOFactory.getOrderDAO(this);
+        reportDAO = DAOFactory.getReportDAO(this);
+        billDAO = DAOFactory.getBillDAO(this);
     }
 
     @Autowired
@@ -79,5 +85,15 @@ public class HibernateSessionManager implements IHibernateSessionManager {
     @Override
     public IGenericDAO<Orders> getOrderDAO() {
         return orderDAO;
+    }
+
+    @Override
+    public IGenericDAO<Report> getReportDAO() {
+        return reportDAO;
+    }
+
+    @Override
+    public IGenericDAO<Bill> getBillDAO() {
+        return billDAO;
     }
 }

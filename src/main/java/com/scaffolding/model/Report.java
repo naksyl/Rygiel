@@ -1,8 +1,8 @@
 package com.scaffolding.model;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -14,15 +14,16 @@ public class Report {
     @Column(name = "id")
     int id;
 
-    @OneToOne(mappedBy = "report")
+    @OneToOne(fetch = FetchType.EAGER, mappedBy = "report")
     private Orders order;
 
-    @OneToMany(mappedBy = "report", cascade = CascadeType.ALL)
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "report", cascade = CascadeType.ALL)
     private List<ReportItem> items;
 
-    private Date date;
+    private LocalDate date;
 
     public Report() {
+        date = LocalDate.now();
     }
 
     public int getId() {
@@ -42,6 +43,7 @@ public class Report {
     }
 
     public List<ReportItem> getItems() {
+        if (items == null) items = new ArrayList<>();
         return items;
     }
 
@@ -49,18 +51,19 @@ public class Report {
         this.items = items;
     }
 
-    public Date getDate() {
+    public LocalDate getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(LocalDate date) {
         this.date = date;
     }
 
     public void addReportItem(ReportItem item) {
-        if(items == null) {
+        if (items == null) {
             items = new ArrayList<>();
         }
+        item.setReport(this);
         items.add(item);
     }
 }

@@ -2,11 +2,11 @@
 
 <?import javafx.scene.control.*?>
 
-<ToolBar prefHeight="40.0" prefWidth="437.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/10.0.2-internal">
+<ToolBar prefHeight="40.0" prefWidth="437.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1">
   <items>
       <Label text="Filtruj:" />
-      <ChoiceBox fx:id="filterChoiceBox" prefWidth="150.0" />
-      <TextField fx:id="filterTextField" promptText="Wpisz szukany tekst..." />
+      <TextField fx:id="filterTextField" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefHeight="26.0" prefWidth="300.0" promptText="Wpisz szukany tekst..." />
     <Button fx:id="clearFilterButton" mnemonicParsing="false" text="Wyczyść" />
+      <Button fx:id="clearFilterButton1" defaultButton="true" layoutX="200.0" layoutY="12.0" mnemonicParsing="false" text="Filtruj" />
   </items>
 </ToolBar>

@@ -16,11 +16,12 @@ public class Orders {
     @JoinColumn(name = "bill_id")
     private Bill bill;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "report_id")
     private Report report;
 
-    @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE,
+    @ManyToOne(fetch = FetchType.EAGER,
+            cascade = {CascadeType.DETACH, CascadeType.MERGE,
             CascadeType.PERSIST, CascadeType.REFRESH})
     @JoinColumn(name = "contractor_id")
     private Contractor contractor;
@@ -34,6 +35,7 @@ public class Orders {
     public Orders() {
         date = LocalDate.now();
         type = OrderType.ASSEMBLY;
+        status = OrderStatus.OPENED;
     }
 
     public int getId() {

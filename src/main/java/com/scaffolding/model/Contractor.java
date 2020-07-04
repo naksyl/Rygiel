@@ -18,7 +18,7 @@ public class Contractor {
     private String email;
     private String phone;
 
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "contractor")
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "contractor")
     private List<Orders> orders;
 
     public Contractor() {

@@ -11,7 +11,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.control.Accordion;
-import javafx.scene.control.TableView;
+import javafx.scene.control.Button;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +24,26 @@ import java.util.ResourceBundle;
 @Component
 public class MainViewController implements Initializable, IAspectAware {
 
+    @FXML
+    public Button editOrderBtn;
+    @FXML
+    public Button deleteOrderBtn;
+    @FXML
+    public Button editReportBtn;
+    @FXML
+    public Button editBillBtn;
+    @FXML
+    public Button editContractorBtn;
+    @FXML
+    public Button deleteContractorBtn;
+    @FXML
+    public Button newOrderBtn;
+    @FXML
+    public Button editReportReportBtn;
+    @FXML
+    public Button deleteReportReportBtn;
+    @FXML
+    public Button editBillReportBtn;
     @FXML
     private HBox aspectBox;
 
@@ -91,10 +111,10 @@ public class MainViewController implements Initializable, IAspectAware {
                         applicationAspect = ApplicationAspect.TABLE_ORDER;
                         break;
                     case 3:
-                        applicationAspect = ApplicationAspect.TABLE_BILL;
+                        applicationAspect = ApplicationAspect.TABLE_REPORT;
                         break;
                     case 4:
-                        applicationAspect = ApplicationAspect.TABLE_REPORT;
+                        applicationAspect = ApplicationAspect.TABLE_BILL;
                         break;
                     case 5:
                         applicationAspect = ApplicationAspect.OPTIONS;
@@ -142,5 +162,51 @@ public class MainViewController implements Initializable, IAspectAware {
 
     public void deleteOrderButton() {
         tableViewController.deleteOrder();
+    }
+
+    public void deleteBillButton(ActionEvent actionEvent) {
+
+    }
+
+    public void editBillButton(ActionEvent actionEvent) {
+        tableViewController.editBill();
+    }
+
+    public void deleteReportButton(ActionEvent actionEvent) {
+        tableViewController.deleteReport();
+    }
+
+    public void editReportButton(ActionEvent actionEvent) {
+        tableViewController.editReport();
+    }
+
+    public void newFileButton(ActionEvent actionEvent) {
+        applicationManager.newFile();
+    }
+
+    public void disableOrderButtons(boolean editOrder, boolean deleteOrder,
+                                    boolean editReport, boolean editBill) {
+        editOrderBtn.setDisable(editOrder);
+        deleteOrderBtn.setDisable(deleteOrder);
+        editReportBtn.setDisable(editReport);
+        editBillBtn.setDisable(editBill);
+    }
+
+    public void disableContractorButton(boolean editContractor, boolean deleteContractor,
+                                        boolean newOrder) {
+        editContractorBtn.setDisable(editContractor);
+        deleteContractorBtn.setDisable(deleteContractor);
+        newOrderBtn.setDisable(newOrder);
+    }
+
+    public void disableReportButtons(boolean editReport, boolean deleteReport,
+                                     boolean editBillBtn) {
+        editReportReportBtn.setDisable(editReport);
+        deleteReportReportBtn.setDisable(deleteReport);
+        editBillReportBtn.setDisable(editBillBtn);
+    }
+
+    public void markAsPayedButton(ActionEvent actionEvent) {
+        tableViewController.closeOrder();
     }
 }
