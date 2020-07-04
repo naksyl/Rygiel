@@ -56,6 +56,12 @@ public class MainViewController implements Initializable, IAspectAware, IDatabas
     @FXML
     public TitledPane billAccordiom;
     @FXML
+    public Button editBillBillBtn;
+    @FXML
+    public Button deleteBillBillBtn;
+    @FXML
+    public Button markBillBtn;
+    @FXML
     private HBox aspectBox;
 
     @FXML
@@ -215,6 +221,12 @@ public class MainViewController implements Initializable, IAspectAware, IDatabas
         editReportReportBtn.setDisable(editReport);
         deleteReportReportBtn.setDisable(deleteReport);
         editBillReportBtn.setDisable(editBillBtn);
+    }
+
+    public void disableBillButtons(boolean editBill, boolean deleteBill, boolean markBill) {
+        editBillBillBtn.setDisable(editBill);
+        deleteBillBillBtn.setDisable(deleteBill);
+        markBillBtn.setDisable(markBill);
     }
 
     public void markAsPayedButton(ActionEvent actionEvent) {

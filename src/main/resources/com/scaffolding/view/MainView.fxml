@@ -51,9 +51,9 @@
                <content>
                   <VBox alignment="TOP_CENTER" spacing="10.0">
                      <children>
-                        <Button mnemonicParsing="false" onAction="#editBillButton" text="Edytuj fakturę" />
-                        <Button mnemonicParsing="false" onAction="#deleteBillButton" text="Usuń fakturę" />
-                        <Button layoutX="40.0" layoutY="92.0" mnemonicParsing="false" onAction="#markAsPayedButton" text="Oznacz jako opłacona" />
+                        <Button fx:id="editBillBillBtn" disable="true" mnemonicParsing="false" onAction="#editBillButton" text="Edytuj fakturę" />
+                        <Button fx:id="deleteBillBillBtn" disable="true" mnemonicParsing="false" onAction="#deleteBillButton" text="Usuń fakturę" />
+                        <Button fx:id="markBillBtn" disable="true" layoutX="40.0" layoutY="92.0" mnemonicParsing="false" onAction="#markAsPayedButton" text="Oznacz jako opłacona" />
                      </children>
                   </VBox>
                </content>

@@ -243,8 +243,8 @@ public class DatabaseTableViewController implements IAspectAware, IDatabaseAware
         contractorTableView.setPlaceholder(new Label("Brak kontrahentów w bazie danych"));
         contractorTableView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue != null) {
-
-                mainViewController.disableContractorButton(false, false, false);
+                boolean hasOrder = newValue.getContractor().getOrders().size() > 0;
+                mainViewController.disableContractorButton(false, hasOrder, false);
 
             } else {
                 mainViewController.disableContractorButton(true, true, true);
@@ -293,7 +293,14 @@ public class DatabaseTableViewController implements IAspectAware, IDatabaseAware
         billStatusColumn.setCellValueFactory(new PropertyValueFactory<>("status"));
         billTotalColumn.setCellValueFactory(new PropertyValueFactory<>("total"));
         billTableView.setPlaceholder(new Label("Brak faktur w bazie danych"));
-
+        billTableView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue != null) {
+                boolean payed = newValue.getStatus().equals("opłacona");
+                mainViewController.disableBillButtons(payed, payed, !payed);
+            } else {
+                mainViewController.disableBillButtons(true, true, true);
+            }
+        });
         if (applicationManager.hasOpenedFile()) {
             contractorTableView.setItems(storageManager.getContractorStorage().getItemList());
             orderTableView.setItems(storageManager.getOrderStorage().getItemList());

@@ -81,6 +81,9 @@ public class Contractor {
     }
 
     public List<Orders> getOrders() {
+        if (orders == null) {
+            orders = new ArrayList<>();
+        }
         return orders;
     }
 
