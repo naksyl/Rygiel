@@ -46,12 +46,19 @@ public class ReportEditorViewController implements Initializable {
     public RadioButton radio2;
     @FXML
     public RadioButton radio3;
+    @FXML
+    public Button removeItemBtn;
+    @FXML
+    public Button addItemBtn;
+    @FXML
+    public Button saveBtn;
 
     private ReportFX reportFX;
     private IApplicationManager applicationManager;
     private ObservableList<ReportItem> itemObservableList;
     private IStorage<ReportFX> reportStorage;
     private IStorage<OrderFX> orderStorage;
+    private boolean readonly;
 
     @Autowired
     public void setOrderStorage(@Lazy IStorage<OrderFX> orderStorage) {
@@ -69,12 +76,14 @@ public class ReportEditorViewController implements Initializable {
     }
 
     public void saveAction(ActionEvent actionEvent) {
-        reportFX.getReport().setItems(itemObservableList);
-        reportFX.setDate(datePicker.getValue());
-        reportFX.getOrder().setStatus(OrderStatus.FINISHED);
-        reportFX.getOrder().getOrder().setReport(reportFX.getReport());
-        reportStorage.updateItem(reportFX);
-        orderStorage.updateItem(reportFX.getOrder());
+        if (!readonly) {
+            reportFX.getReport().setItems(itemObservableList);
+            reportFX.setDate(datePicker.getValue());
+            reportFX.getOrder().setStatus(OrderStatus.FINISHED);
+            reportFX.getOrder().getOrder().setReport(reportFX.getReport());
+            reportStorage.updateItem(reportFX);
+            orderStorage.updateItem(reportFX.getOrder());
+        }
         applicationManager.closeActiveWindow();
     }
 
@@ -83,9 +92,9 @@ public class ReportEditorViewController implements Initializable {
     }
 
     public void removeItemButon(ActionEvent actionEvent) {
-        if(itemListView.getItems().size() > 0) {
+        if (itemListView.getItems().size() > 0) {
             ReportItem item = itemListView.getSelectionModel().getSelectedItem();
-            if(item != null) {
+            if (item != null) {
                 itemObservableList.removeAll(item);
             } else applicationManager.showWarning("Nie wybrano żadnego elementu raportu");
         } else applicationManager.showWarning("Lista nie zawiera żadnych elementów");
@@ -103,7 +112,7 @@ public class ReportEditorViewController implements Initializable {
                 e.printStackTrace();
                 applicationManager.showWarning(piecesTextField.getText() + " nie jest liczbą");
             }
-        }  else applicationManager.showWarning("Nie wprowadzono ilości");
+        } else applicationManager.showWarning("Nie wprowadzono ilości");
     }
 
     private void loadItems() {
@@ -131,5 +140,21 @@ public class ReportEditorViewController implements Initializable {
         radio3.setUserData(3);
         itemObservableList = FXCollections.observableArrayList();
         loadItems();
+        if (readonly) {
+            addItemBtn.setDisable(true);
+            removeItemBtn.setDisable(true);
+            saveBtn.setText("Ok");
+        }
+    }
+
+    public void editReport(ReportFX reportFX) {
+        this.reportFX = reportFX;
+        applicationManager.showWindow(ViewType.REPORT_EDITOR_VIEW, "Edytuj raport");
+    }
+
+    public void showReport(ReportFX selectedItem) {
+        readonly = true;
+        this.reportFX = selectedItem;
+        applicationManager.showWindow(ViewType.REPORT_EDITOR_VIEW, "Podgląd raportu [TYLKO DO ODCZYTU]");
     }
 }

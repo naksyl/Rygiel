@@ -21,7 +21,7 @@ public class ReportStorage implements IStorage<ReportFX>, IDatabaseAware {
 
     private final IGenericDAO<Report> reportDAO;
     private final List<ReportFX> reportList = new ArrayList<>();
-    private ObservableList<ReportFX> fxList;
+    private ObservableList<ReportFX> fxList = FXCollections.emptyObservableList();
     private boolean loaded;
     private IStorageManager storageManager;
 

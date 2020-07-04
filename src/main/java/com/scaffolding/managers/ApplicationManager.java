@@ -123,6 +123,7 @@ public class ApplicationManager implements IApplicationManager {
 
     @Override
     public void openFile() {
+        fileChooser.setTitle("Otwórz bazę danych");
         if (hasOpenedFile()) {
             sessionManager.closeSession();
             openedFile = null;
@@ -158,6 +159,8 @@ public class ApplicationManager implements IApplicationManager {
             sessionManager.closeSession();
             openedFile = null;
         }
+        openedFile = null;
+        fileChooser.setTitle("Wybierz nazwę nowego pliku");
         File newFile = fileChooser.showSaveDialog(stages.peek());
         if (newFile != null) {
             System.out.println("Otwieram baze " + newFile.getAbsolutePath());

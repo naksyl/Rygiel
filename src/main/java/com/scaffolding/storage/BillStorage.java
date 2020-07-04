@@ -17,7 +17,7 @@ import java.util.List;
 public class BillStorage implements IStorage<BillFX>, IDatabaseAware {
     private final IGenericDAO<Bill> billDAO;
     private final List<BillFX> billList = new ArrayList<>();
-    private ObservableList<BillFX> fxList;
+    private ObservableList<BillFX> fxList = FXCollections.emptyObservableList();
     private boolean loaded;
     private IStorageManager storageManager;
 
@@ -73,6 +73,7 @@ public class BillStorage implements IStorage<BillFX>, IDatabaseAware {
         List<Bill> bills = billDAO.findAll();
         for (Bill bill : bills) {
             BillFX billFX = new BillFX(bill);
+
 
             billFX.setOrder(storageManager.getOrderStorage()
                     .findById(bill.getOrder().getId()));

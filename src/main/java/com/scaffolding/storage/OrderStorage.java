@@ -19,7 +19,7 @@ public class OrderStorage implements IStorage<OrderFX>, IDatabaseAware {
 
     private final IGenericDAO<Orders> orderDAO;
     private final List<OrderFX> orderList = new ArrayList<>();
-    private ObservableList<OrderFX> fxList;
+    private ObservableList<OrderFX> fxList = FXCollections.emptyObservableList();
     private boolean loaded;
     private IStorageManager storageManager;
 

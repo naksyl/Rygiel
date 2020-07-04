@@ -61,6 +61,9 @@ public class MainViewController implements Initializable, IAspectAware, IDatabas
     public Button deleteBillBillBtn;
     @FXML
     public Button markBillBtn;
+    public Button showOrderBtn;
+    public Button showReportBtn;
+    public Button showBillBtn;
     @FXML
     private HBox aspectBox;
 
@@ -201,8 +204,9 @@ public class MainViewController implements Initializable, IAspectAware, IDatabas
         applicationManager.newFile();
     }
 
-    public void disableOrderButtons(boolean editOrder, boolean deleteOrder,
+    public void disableOrderButtons(boolean showOrder, boolean editOrder, boolean deleteOrder,
                                     boolean editReport, boolean editBill) {
+        showOrderBtn.setDisable(showOrder);
         editOrderBtn.setDisable(editOrder);
         deleteOrderBtn.setDisable(deleteOrder);
         editReportBtn.setDisable(editReport);
@@ -216,14 +220,16 @@ public class MainViewController implements Initializable, IAspectAware, IDatabas
         newOrderBtn.setDisable(newOrder);
     }
 
-    public void disableReportButtons(boolean editReport, boolean deleteReport,
+    public void disableReportButtons(boolean showReport, boolean editReport, boolean deleteReport,
                                      boolean editBillBtn) {
+        showReportBtn.setDisable(showReport);
         editReportReportBtn.setDisable(editReport);
         deleteReportReportBtn.setDisable(deleteReport);
         editBillReportBtn.setDisable(editBillBtn);
     }
 
-    public void disableBillButtons(boolean editBill, boolean deleteBill, boolean markBill) {
+    public void disableBillButtons(boolean showBill, boolean editBill, boolean deleteBill, boolean markBill) {
+        showBillBtn.setDisable(showBill);
         editBillBillBtn.setDisable(editBill);
         deleteBillBillBtn.setDisable(deleteBill);
         markBillBtn.setDisable(markBill);
@@ -247,5 +253,25 @@ public class MainViewController implements Initializable, IAspectAware, IDatabas
         orderAccordion.setDisable(true);
         reportAccordion.setDisable(true);
         billAccordiom.setDisable(true);
+    }
+
+    public void showOrderButton(ActionEvent actionEvent) {
+        tableViewController.showOrder();
+    }
+
+    public void showReportButton(ActionEvent actionEvent) {
+        tableViewController.showReport();
+    }
+
+    public void showBillButton(ActionEvent actionEvent) {
+
+    }
+
+    public void createReportButton(ActionEvent actionEvent) {
+        tableViewController.createReport();
+    }
+
+    public void createBillButton(ActionEvent actionEvent) {
+        tableViewController.createBill();
     }
 }

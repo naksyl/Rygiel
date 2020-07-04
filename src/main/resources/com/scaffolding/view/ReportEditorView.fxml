@@ -44,8 +44,8 @@
                   </HBox>
                   <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0" spacing="10.0">
                      <children>
-                        <Button mnemonicParsing="false" onAction="#addItemButton" text="Dodaj -&gt;" />
-                        <Button mnemonicParsing="false" onAction="#removeItemButon" text="Usuń &lt;-" />
+                        <Button fx:id="addItemBtn" mnemonicParsing="false" onAction="#addItemButton" text="Dodaj -&gt;" />
+                        <Button fx:id="removeItemBtn" mnemonicParsing="false" onAction="#removeItemButon" text="Usuń &lt;-" />
                      </children>
                      <padding>
                         <Insets top="10.0" />
@@ -66,7 +66,7 @@
                <HBox.margin>
                   <Insets bottom="5.0" />
                </HBox.margin></Button>
-            <Button defaultButton="true" mnemonicParsing="false" onAction="#saveAction" text="Zapisz">
+            <Button fx:id="saveBtn" defaultButton="true" mnemonicParsing="false" onAction="#saveAction" text="Zapisz">
                <HBox.margin>
                   <Insets bottom="5.0" />
                </HBox.margin></Button>

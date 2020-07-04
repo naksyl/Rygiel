@@ -40,7 +40,7 @@
                <HBox.margin>
                   <Insets bottom="5.0" />
                </HBox.margin></Button>
-            <Button defaultButton="true" mnemonicParsing="false" onAction="#saveAction" text="Zapisz">
+            <Button fx:id="saveBtn" defaultButton="true" mnemonicParsing="false" onAction="#saveAction" text="Zapisz">
                <HBox.margin>
                   <Insets bottom="5.0" />
                </HBox.margin></Button>

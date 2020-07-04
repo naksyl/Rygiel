@@ -265,10 +265,10 @@ public class DatabaseTableViewController implements IAspectAware, IDatabaseAware
                 boolean disableDelete = status != OrderStatus.OPENED;
                 boolean disableReport = status == OrderStatus.CLOSED || status == OrderStatus.NOT_PAYED;
                 boolean disableBilll = !(status == OrderStatus.FINISHED || status == OrderStatus.NOT_PAYED);
-                mainViewController.disableOrderButtons(disableEdit, disableDelete, disableReport, disableBilll);
+                mainViewController.disableOrderButtons(false, disableEdit, disableDelete, disableReport, disableBilll);
 
             } else {
-                mainViewController.disableOrderButtons(true, true, true, true);
+                mainViewController.disableOrderButtons(true, true, true, true, true);
             }
             ;
         });
@@ -278,12 +278,12 @@ public class DatabaseTableViewController implements IAspectAware, IDatabaseAware
         reportOrderColumn.setCellValueFactory(new PropertyValueFactory<>("order"));
         reportTableView.setPlaceholder(new Label("Brak raportów w bazie danych"));
         reportTableView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
-            if(newValue != null) {
+            if (newValue != null) {
                 boolean hasBill = newValue.getReport().getOrder().getBill() != null;
-                mainViewController.disableReportButtons(hasBill, hasBill, hasBill);
+                mainViewController.disableReportButtons(false, hasBill, hasBill, hasBill);
 
             } else {
-                mainViewController.disableReportButtons(true, true, true);
+                mainViewController.disableReportButtons(true, true, true, true);
             }
         });
 
@@ -296,9 +296,9 @@ public class DatabaseTableViewController implements IAspectAware, IDatabaseAware
         billTableView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue != null) {
                 boolean payed = newValue.getStatus().equals("opłacona");
-                mainViewController.disableBillButtons(payed, payed, !payed);
+                mainViewController.disableBillButtons(false, payed, payed, payed);
             } else {
-                mainViewController.disableBillButtons(true, true, true);
+                mainViewController.disableBillButtons(true,true, true, true);
             }
         });
         if (applicationManager.hasOpenedFile()) {
@@ -330,12 +330,18 @@ public class DatabaseTableViewController implements IAspectAware, IDatabaseAware
     }
 
     public void editReport() {
-        OrderFX orderFX = orderTableView.getSelectionModel().getSelectedItem();
-        if (orderFX != null) {
-            if (orderFX.getStatus() == OrderStatus.OPENED) {
-                reportEditorViewController.newReport(orderFX);
-            } else applicationManager.showWarning("Brak zlececeń ze statusem \"otwarte\"");
-        } else applicationManager.showWarning("Nie wybrano zlecenia.");
+        if (databaseAspect == DatabaseAspect.TABLE_REPORT) {
+            reportEditorViewController.editReport(reportTableView.getSelectionModel().getSelectedItem());
+        } else if (databaseAspect == DatabaseAspect.TABLE_ORDER) {
+            OrderFX orderFX = orderTableView.getSelectionModel().getSelectedItem();
+            if (orderFX != null) {
+                if (orderFX.getStatus() == OrderStatus.OPENED) {
+                    reportEditorViewController.newReport(orderFX);
+                } else if(orderFX.getStatus() == OrderStatus.FINISHED) {
+                    reportEditorViewController.editReport(orderFX.getReportFX());
+                }
+            } else applicationManager.showWarning("Nie wybrano zlecenia.");
+        }
     }
 
     public void deleteReport() {
@@ -387,5 +393,35 @@ public class DatabaseTableViewController implements IAspectAware, IDatabaseAware
                 storageManager.getBillStorage().updateItem(bill);
             }
         }
+    }
+
+    public void showOrder() {
+        orderEditorViewController.showOrder(orderTableView.getSelectionModel().getSelectedItem());
+    }
+
+    public void showReport() {
+        reportEditorViewController.showReport(reportTableView.getSelectionModel().getSelectedItem());
+    }
+
+    public void createReport() {
+        OrderFX orderFX = orderTableView.getSelectionModel().getSelectedItem();
+        if(orderFX != null) {
+            if(orderFX.getOrder().getReport() == null)
+                editReport();
+            else showReport();
+        }
+    }
+
+    public void createBill() {
+        OrderFX orderFX = orderTableView.getSelectionModel().getSelectedItem();
+        if(orderFX != null) {
+            if(orderFX.getOrder().getBill() == null)
+                editBill();
+            else showBill();
+        }
+    }
+
+    private void showBill() {
+
     }
 }

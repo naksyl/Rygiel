@@ -19,7 +19,7 @@ public class ContractorStorage implements IStorage<ContractorFX>, IDatabaseAware
 
     private final IGenericDAO<Contractor> contractorDAO;
     private final List<ContractorFX> contractorList = new ArrayList<>();
-    private ObservableList<ContractorFX> fxList;
+    private ObservableList<ContractorFX> fxList = FXCollections.emptyObservableList();
     private boolean loaded;
     private IStorageManager storageManager;
 

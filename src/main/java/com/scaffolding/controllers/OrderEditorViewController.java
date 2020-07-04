@@ -11,6 +11,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
@@ -36,12 +37,15 @@ public class OrderEditorViewController implements Initializable {
     public ChoiceBox<OrderType> typeChoiceBox;
     @FXML
     public DatePicker datePicker;
+    @FXML
+    public Button saveBtn;
 
     private IApplicationManager applicationManager;
     private IStorage<ContractorFX> contractorStorage;
     private IStorage<OrderFX> orderStorage;
     private ObservableList<OrderType> types = FXCollections.observableList(Arrays.asList(OrderType.values()));
     private OrderFX order;
+    private boolean readonly;
 
     @Autowired
     public void setApplicationManager(@Lazy IApplicationManager applicationManager) {
@@ -59,6 +63,7 @@ public class OrderEditorViewController implements Initializable {
     }
 
     public void newOrder(ContractorFX contractorFX) {
+        readonly = false;
         Orders entity = new Orders();
         entity.setContractor(contractorFX.getContractor());
         order = new OrderFX(entity);
@@ -68,6 +73,7 @@ public class OrderEditorViewController implements Initializable {
     }
 
     public void editOrder(OrderFX order) {
+        readonly = false;
         this.order = order;
         ContractorFX contractorFX = new ContractorFX(order.getOrder().getContractor());
         this.order.setContractorFX(contractorFX);
@@ -85,6 +91,12 @@ public class OrderEditorViewController implements Initializable {
         typeChoiceBox.setItems(types);
         updateContractorChoiceBox();
         bindControls();
+        if (readonly) {
+            descriptionTextField.setEditable(false);
+            addressTextField.setEditable(false);
+            datePicker.setEditable(false);
+            saveBtn.setText("Ok");
+        }
     }
 
     private void bindControls() {
@@ -96,11 +108,19 @@ public class OrderEditorViewController implements Initializable {
     }
 
     public void saveAction() {
-        orderStorage.updateItem(order);
+        if (!readonly) {
+            orderStorage.updateItem(order);
+        }
         applicationManager.closeActiveWindow();
     }
 
     public void cancelAction() {
         applicationManager.closeActiveWindow();
+    }
+
+    public void showOrder(OrderFX selectedItem) {
+        readonly = true;
+        order = selectedItem;
+        applicationManager.showWindow(ViewType.ORDER_EDITOR_VIEW, "Podgląd zlecenia [TYLKO DO ODCZYTU]");
     }
 }
