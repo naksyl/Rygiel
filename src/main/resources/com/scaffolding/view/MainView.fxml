@@ -16,7 +16,7 @@
                 </VBox>
             </content>
           </TitledPane>
-            <TitledPane animated="false" text="Kontrahenci">
+            <TitledPane fx:id="contractorAccordion" animated="false" disable="true" text="Kontrahenci">
                 <VBox alignment="TOP_CENTER" spacing="10.0">
                     <Button defaultButton="true" mnemonicParsing="false" onAction="#newContractorButton" text="Dodaj kontrahenta" />
                     <Button fx:id="editContractorBtn" disable="true" mnemonicParsing="false" onAction="#editContractorButton" text="Edytuj kontrahenta" />
@@ -24,7 +24,7 @@
                   <Button fx:id="newOrderBtn" disable="true" layoutX="61.0" layoutY="92.0" mnemonicParsing="false" onAction="#newOrderButton" text="Nowe zlecenie" />
                 </VBox>
             </TitledPane>
-            <TitledPane animated="false" text="Zlecenia">
+            <TitledPane fx:id="orderAccordion" animated="false" disable="true" text="Zlecenia">
                <content>
                   <VBox alignment="TOP_CENTER" spacing="10.0">
                      <children>
@@ -36,7 +36,7 @@
                   </VBox>
                </content>
             </TitledPane>
-            <TitledPane animated="false" layoutX="10.0" layoutY="367.0" text="Raporty">
+            <TitledPane fx:id="reportAccordion" animated="false" disable="true" layoutX="10.0" layoutY="367.0" text="Raporty">
                <content>
                   <VBox alignment="TOP_CENTER" spacing="10.0">
                      <children>
@@ -47,7 +47,7 @@
                   </VBox>
                </content>
             </TitledPane>
-            <TitledPane animated="false" layoutX="10.0" layoutY="61.0" text="Faktury">
+            <TitledPane fx:id="billAccordiom" animated="false" disable="true" layoutX="10.0" layoutY="61.0" text="Faktury">
                <content>
                   <VBox alignment="TOP_CENTER" spacing="10.0">
                      <children>

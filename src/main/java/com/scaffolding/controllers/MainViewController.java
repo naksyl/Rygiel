@@ -5,6 +5,7 @@ import com.scaffolding.enums.ViewType;
 import com.scaffolding.factories.ResourceMapper;
 import com.scaffolding.interfaces.IApplicationManager;
 import com.scaffolding.interfaces.IAspectAware;
+import com.scaffolding.interfaces.IDatabaseAware;
 import com.scaffolding.interfaces.IViewManager;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -12,17 +13,19 @@ import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.control.Accordion;
 import javafx.scene.control.Button;
+import javafx.scene.control.TitledPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 
+import java.io.File;
 import java.net.URL;
 import java.util.ResourceBundle;
 
 @Component
-public class MainViewController implements Initializable, IAspectAware {
+public class MainViewController implements Initializable, IAspectAware, IDatabaseAware {
 
     @FXML
     public Button editOrderBtn;
@@ -44,6 +47,14 @@ public class MainViewController implements Initializable, IAspectAware {
     public Button deleteReportReportBtn;
     @FXML
     public Button editBillReportBtn;
+    @FXML
+    public TitledPane contractorAccordion;
+    @FXML
+    public TitledPane orderAccordion;
+    @FXML
+    public TitledPane reportAccordion;
+    @FXML
+    public TitledPane billAccordiom;
     @FXML
     private HBox aspectBox;
 
@@ -208,5 +219,21 @@ public class MainViewController implements Initializable, IAspectAware {
 
     public void markAsPayedButton(ActionEvent actionEvent) {
         tableViewController.closeOrder();
+    }
+
+    @Override
+    public void onDatabaseOpen(File file) {
+        contractorAccordion.setDisable(false);
+        orderAccordion.setDisable(false);
+        reportAccordion.setDisable(false);
+        billAccordiom.setDisable(false);
+    }
+
+    @Override
+    public void onDatabaseClose() {
+        contractorAccordion.setDisable(true);
+        orderAccordion.setDisable(true);
+        reportAccordion.setDisable(true);
+        billAccordiom.setDisable(true);
     }
 }

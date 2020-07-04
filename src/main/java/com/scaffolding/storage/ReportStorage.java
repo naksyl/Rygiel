@@ -59,10 +59,10 @@ public class ReportStorage implements IStorage<ReportFX>, IDatabaseAware {
     @Override
     public ReportFX findById(int id) {
         ReportFX found = null;
-        if(!loaded && storageManager.hasOpenedFile()) updateFromDatabase();
-        if(loaded) {
+        if (!loaded && storageManager.hasOpenedFile()) updateFromDatabase();
+        if (loaded) {
             for (ReportFX fx : fxList) {
-                if(fx.getReport().getId() == id) {
+                if (fx.getReport().getId() == id) {
                     found = fx;
                     break;
                 }
@@ -79,7 +79,8 @@ public class ReportStorage implements IStorage<ReportFX>, IDatabaseAware {
             ReportFX reportFX = new ReportFX(report);
             reportFX.setOrder(storageManager.getOrderStorage()
                     .findById(report.getOrder().getId()));
-            reportFX.setContractor(reportFX.getOrder().getContractorFX());
+            reportFX.setContractor(storageManager.getContractorStorage()
+                    .findById(report.getOrder().getContractor().getId()));
             reportList.add(reportFX);
         }
         fxList = FXCollections.observableList(reportList);
