@@ -55,8 +55,8 @@ public class MainViewController implements Initializable, IAspectAware, IDatabas
     public TitledPane reportAccordion;
     @FXML
     public TitledPane billAccordiom;
-    @FXML
-    public Button editBillBillBtn;
+   // @FXML
+   // public Button editBillBillBtn;
     @FXML
     public Button deleteBillBillBtn;
     @FXML
@@ -230,7 +230,7 @@ public class MainViewController implements Initializable, IAspectAware, IDatabas
 
     public void disableBillButtons(boolean showBill, boolean editBill, boolean deleteBill, boolean markBill) {
         showBillBtn.setDisable(showBill);
-        editBillBillBtn.setDisable(editBill);
+//        editBillBillBtn.setDisable(editBill);
         deleteBillBillBtn.setDisable(deleteBill);
         markBillBtn.setDisable(markBill);
     }
@@ -260,11 +260,11 @@ public class MainViewController implements Initializable, IAspectAware, IDatabas
     }
 
     public void showReportButton(ActionEvent actionEvent) {
-        tableViewController.showReport();
+        tableViewController.showReport(null);
     }
 
     public void showBillButton(ActionEvent actionEvent) {
-
+        tableViewController.showBill();
     }
 
     public void createReportButton(ActionEvent actionEvent) {

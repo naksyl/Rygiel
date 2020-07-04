@@ -264,8 +264,8 @@ public class DatabaseTableViewController implements IAspectAware, IDatabaseAware
                 boolean disableEdit = status != OrderStatus.OPENED;
                 boolean disableDelete = status != OrderStatus.OPENED;
                 boolean disableReport = status == OrderStatus.CLOSED || status == OrderStatus.NOT_PAYED;
-                boolean disableBilll = !(status == OrderStatus.FINISHED || status == OrderStatus.NOT_PAYED);
-                mainViewController.disableOrderButtons(false, disableEdit, disableDelete, disableReport, disableBilll);
+                boolean disableBilll = status == OrderStatus.OPENED;
+                mainViewController.disableOrderButtons(false, disableEdit, disableDelete, false, disableBilll);
 
             } else {
                 mainViewController.disableOrderButtons(true, true, true, true, true);
@@ -298,7 +298,7 @@ public class DatabaseTableViewController implements IAspectAware, IDatabaseAware
                 boolean payed = newValue.getStatus().equals("opłacona");
                 mainViewController.disableBillButtons(false, payed, payed, payed);
             } else {
-                mainViewController.disableBillButtons(true,true, true, true);
+                mainViewController.disableBillButtons(true, true, true, true);
             }
         });
         if (applicationManager.hasOpenedFile()) {
@@ -337,7 +337,7 @@ public class DatabaseTableViewController implements IAspectAware, IDatabaseAware
             if (orderFX != null) {
                 if (orderFX.getStatus() == OrderStatus.OPENED) {
                     reportEditorViewController.newReport(orderFX);
-                } else if(orderFX.getStatus() == OrderStatus.FINISHED) {
+                } else if (orderFX.getStatus() == OrderStatus.FINISHED) {
                     reportEditorViewController.editReport(orderFX.getReportFX());
                 }
             } else applicationManager.showWarning("Nie wybrano zlecenia.");
@@ -399,29 +399,53 @@ public class DatabaseTableViewController implements IAspectAware, IDatabaseAware
         orderEditorViewController.showOrder(orderTableView.getSelectionModel().getSelectedItem());
     }
 
-    public void showReport() {
+    public void showReport(ReportFX reportFX) {
+        if (reportFX != null)
+        reportEditorViewController.showReport(reportFX);
+        else {
+
         reportEditorViewController.showReport(reportTableView.getSelectionModel().getSelectedItem());
+        }
     }
 
     public void createReport() {
         OrderFX orderFX = orderTableView.getSelectionModel().getSelectedItem();
-        if(orderFX != null) {
-            if(orderFX.getOrder().getReport() == null)
+        if (orderFX != null) {
+            if (orderFX.getOrder().getReport() == null)
                 editReport();
-            else showReport();
+            else showReport(orderFX.getReportFX());
         }
     }
 
     public void createBill() {
         OrderFX orderFX = orderTableView.getSelectionModel().getSelectedItem();
-        if(orderFX != null) {
-            if(orderFX.getOrder().getBill() == null)
+        if (orderFX != null) {
+            if (orderFX.getOrder().getBill() == null)
                 editBill();
             else showBill();
         }
     }
 
-    private void showBill() {
-
+    public void showBill() {
+        BillFX billfx = null;
+        switch (databaseAspect) {
+            case TABLE_ORDER:
+                billfx = storageManager.getBillStorage().findById(orderTableView.getSelectionModel()
+                        .getSelectedItem().getOrder().getBill().getId());
+                break;
+            case TABLE_REPORT:
+                billfx = storageManager.getBillStorage().findById(reportTableView.getSelectionModel()
+                        .getSelectedItem().getReport().getOrder().getBill().getId());
+                break;
+            case TABLE_BILL:
+                billfx = billTableView.getSelectionModel().getSelectedItem();
+                break;
+            default:
+                billfx = null;
+        }
+        if (billfx == null)
+            editBill();
+        else
+            billEditorViewController.showBill(billfx);
     }
 }

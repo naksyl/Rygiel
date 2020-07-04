@@ -13,6 +13,7 @@ import com.scaffolding.model.jfx.ReportFX;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
@@ -42,6 +43,7 @@ public class BillEditorViewController implements Initializable {
     public Label workhoursTotalLabel;
     @FXML
     public Label totalLabel;
+    @FXML public Button saveBtn;
 
     private IApplicationManager applicationManager;
     private IStorageManager storageManager;
@@ -52,6 +54,8 @@ public class BillEditorViewController implements Initializable {
     private final double disassemblyPrice = 5.2;
     private final double reviewPrice = 28;
     private final double workhourPrice = 40;
+
+    private boolean readonly;
 
     @Autowired
     public void setStorageManager(IStorageManager storageManager) {
@@ -68,13 +72,15 @@ public class BillEditorViewController implements Initializable {
     }
 
     public void saveAction(ActionEvent actionEvent) {
-        int bills = storageManager.getBillStorage().getItemList().size();
-        billFX.setNumber(Integer.toString(bills));
-        billFX.getOrder().setBillFX(billFX);
-        billFX.getOrder().setStatus(OrderStatus.NOT_PAYED);
-        storageManager.getBillStorage().updateItem(billFX);
-        storageManager.getOrderStorage().updateItem(billFX.getOrder());
-        storageManager.getReportStorage().updateItem(billFX.getReport());
+        if (!readonly) {
+            int bills = storageManager.getBillStorage().getItemList().size();
+            billFX.setNumber(Integer.toString(bills));
+            billFX.getOrder().setBillFX(billFX);
+            billFX.getOrder().setStatus(OrderStatus.NOT_PAYED);
+            storageManager.getBillStorage().updateItem(billFX);
+            storageManager.getOrderStorage().updateItem(billFX.getOrder());
+            storageManager.getReportStorage().updateItem(billFX.getReport());
+        }
         applicationManager.closeActiveWindow();
     }
 
@@ -146,5 +152,13 @@ public class BillEditorViewController implements Initializable {
         double sum = assembliesTotal + disassemblyTotal + reviewTotal + hourTotal;
         totalLabel.setText(Double.toString(sum) + "zł") ;
         billFX.setTotal(sum);
+        if (readonly)
+            saveBtn.setText("Ok");
+    }
+
+    public void showBill(BillFX billfx) {
+        this.billFX = billfx;
+        readonly = true;
+        applicationManager.showWindow(ViewType.BILL_EDITOR_VIEW, "Podgląd faktury [TYLKO DO ODCZYTU]");
     }
 }

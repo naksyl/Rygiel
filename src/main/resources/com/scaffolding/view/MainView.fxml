@@ -31,8 +31,8 @@
                         <Button fx:id="showOrderBtn" disable="true" layoutX="42.0" layoutY="20.0" mnemonicParsing="false" onAction="#showOrderButton" text="Podgląd zlecenia" />
                         <Button fx:id="editOrderBtn" disable="true" mnemonicParsing="false" onAction="#editOrderButton" text="Edytuj zlecenie" />
                         <Button fx:id="deleteOrderBtn" disable="true" mnemonicParsing="false" onAction="#deleteOrderButton" text="Usuń zlecenie" />
-                        <Button fx:id="editReportBtn" disable="true" layoutX="38.0" layoutY="92.0" mnemonicParsing="false" onAction="#createReportButton" text="Dodaj raport" />
-                        <Button fx:id="editBillBtn" disable="true" layoutX="22.0" layoutY="128.0" mnemonicParsing="false" onAction="#createBillButton" text="Dodaj fakturę" />
+                        <Button fx:id="editReportBtn" disable="true" layoutX="38.0" layoutY="92.0" mnemonicParsing="false" onAction="#createReportButton" text="Dodaj/Pokaż raport" />
+                        <Button fx:id="editBillBtn" disable="true" layoutX="22.0" layoutY="128.0" mnemonicParsing="false" onAction="#createBillButton" text="Dodaj/Pokaż fakturę" />
                      </children>
                   </VBox>
                </content>

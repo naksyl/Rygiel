@@ -148,6 +148,7 @@ public class ReportEditorViewController implements Initializable {
     }
 
     public void editReport(ReportFX reportFX) {
+        readonly = false;
         this.reportFX = reportFX;
         applicationManager.showWindow(ViewType.REPORT_EDITOR_VIEW, "Edytuj raport");
     }
