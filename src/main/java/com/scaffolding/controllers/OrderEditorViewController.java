@@ -75,10 +75,8 @@ public class OrderEditorViewController implements Initializable {
     public void editOrder(OrderFX order) {
         readonly = false;
         this.order = order;
-        ContractorFX contractorFX = new ContractorFX(order.getOrder().getContractor());
+        ContractorFX contractorFX = contractorStorage.findById(order.getOrder().getContractor().getId());
         this.order.setContractorFX(contractorFX);
-        contractorChoiceBox.getItems().clear();
-        contractorChoiceBox.getItems().add(contractorFX);
         applicationManager.showWindow(ViewType.ORDER_EDITOR_VIEW, "Edytuj zlecenie");
     }
 
