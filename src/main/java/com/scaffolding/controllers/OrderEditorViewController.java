@@ -119,6 +119,7 @@ public class OrderEditorViewController implements Initializable {
     public void showOrder(OrderFX selectedItem) {
         readonly = true;
         order = selectedItem;
+        order.setContractorFX(contractorStorage.findById(order.getOrder().getContractor().getId()));
         applicationManager.showWindow(ViewType.ORDER_EDITOR_VIEW, "Podgląd zlecenia [TYLKO DO ODCZYTU]");
     }
 }
