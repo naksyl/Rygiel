@@ -280,7 +280,8 @@ public class DatabaseTableViewController implements IAspectAware, IDatabaseAware
         reportTableView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue != null) {
                 boolean hasBill = newValue.getReport().getOrder().getBill() != null;
-                mainViewController.disableReportButtons(false, hasBill, hasBill, hasBill);
+                boolean hasPayedBill = newValue.getReport().getOrder().getStatus() == OrderStatus.CLOSED;
+                mainViewController.disableReportButtons(false, hasBill, hasBill, hasPayedBill);
 
             } else {
                 mainViewController.disableReportButtons(true, true, true, true);
@@ -375,6 +376,17 @@ public class DatabaseTableViewController implements IAspectAware, IDatabaseAware
                     applicationManager.showWarning("Nie wybrano zlecenia");
                 break;
             case TABLE_REPORT:
+                orderFX = reportTableView.getSelectionModel().getSelectedItem().getOrder();
+                if (orderFX != null) {
+                        if (orderFX.getBillFX() != null) {
+                            if (orderFX.getBillFX().getBill().getPayed().equals("opłacona"))
+                                showBill();
+                            else
+                                billEditorViewController.editBill(orderFX.getBillFX());
+                        } else
+                            billEditorViewController.newBill(orderFX);
+                } else
+                    applicationManager.showWarning("Nie wybrano raportu");
                 break;
         }
     }
@@ -418,11 +430,16 @@ public class DatabaseTableViewController implements IAspectAware, IDatabaseAware
     }
 
     public void createBill() {
-        OrderFX orderFX = orderTableView.getSelectionModel().getSelectedItem();
+        OrderFX orderFX = null;
+        if (databaseAspect == DatabaseAspect.TABLE_ORDER) {
+            orderFX = orderTableView.getSelectionModel().getSelectedItem();
+        } else if (databaseAspect == DatabaseAspect.TABLE_REPORT) {
+            orderFX = reportTableView.getSelectionModel().getSelectedItem().getOrder();
+        }
         if (orderFX != null) {
             if (orderFX.getOrder().getBill() == null)
                 editBill();
-            else showBill();
+            else  billEditorViewController.showBill(orderFX.getBillFX());
         }
     }
 

@@ -40,6 +40,10 @@ public class OrderFX {
     }
 
     public BillFX getBillFX() {
+        if (billFX.get() != null) {
+            billFX.get().setContractor(getContractorFX());
+            billFX.get().setReport(getReportFX());
+        }
         return billFX.get();
     }
 

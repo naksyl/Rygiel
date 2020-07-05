@@ -74,9 +74,11 @@ public class BillEditorViewController implements Initializable {
     public void saveAction(ActionEvent actionEvent) {
         if (!readonly) {
             int bills = storageManager.getBillStorage().getItemList().size();
-            billFX.setNumber(Integer.toString(bills));
+            billFX.getBill().setNumber(Integer.toString(bills));
             billFX.getOrder().setBillFX(billFX);
             billFX.getOrder().setStatus(OrderStatus.NOT_PAYED);
+            billFX.getBill().setPayed("nieopłacona");
+            billFX.setStatus("nieopłacona");
             storageManager.getBillStorage().updateItem(billFX);
             storageManager.getOrderStorage().updateItem(billFX.getOrder());
             storageManager.getReportStorage().updateItem(billFX.getReport());

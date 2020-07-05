@@ -77,7 +77,9 @@ public class ReportEditorViewController implements Initializable {
 
     public void saveAction(ActionEvent actionEvent) {
         if (!readonly) {
-            reportFX.getReport().setItems(itemObservableList);
+            for(ReportItem item : itemObservableList) {
+                reportFX.getReport().addReportItem(item);
+            }
             reportFX.setDate(datePicker.getValue());
             reportFX.getOrder().setStatus(OrderStatus.FINISHED);
             reportFX.getOrder().getOrder().setReport(reportFX.getReport());

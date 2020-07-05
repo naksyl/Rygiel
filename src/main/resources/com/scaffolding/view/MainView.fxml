@@ -44,7 +44,6 @@
                         <Button fx:id="showReportBtn" disable="true" layoutX="47.0" layoutY="20.0" mnemonicParsing="false" onAction="#showReportButton" text="Podgląd raport" />
                         <Button fx:id="editReportReportBtn" disable="true" mnemonicParsing="false" onAction="#editReportButton" text="Edytuj raport" />
                         <Button fx:id="deleteReportReportBtn" disable="true" mnemonicParsing="false" onAction="#deleteReportButton" text="Usuń raport" />
-                        <Button fx:id="editBillReportBtn" disable="true" layoutX="43.0" layoutY="92.0" mnemonicParsing="false" onAction="#editBillButton" text="Dodaj/edytuj fakturę" />
                      </children>
                   </VBox>
                </content>
